@@ -30,8 +30,17 @@ h1 {
 }
 
 
+
 p {
     font-family: 'Francois One', sans-serif;
     font-size: 25px;
     text-align: center;
 }
+
+body {
+    background: url('./bottles.jpg') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+  }
