@@ -9,6 +9,14 @@
 
 }
 
+body {
+    background: url('./bottles.jpg') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+}
+
 /* Add some content at the bottom of the video/page */
 .content {
     position: fixed;
@@ -36,11 +44,3 @@ p {
     font-size: 25px;
     text-align: center;
 }
-
-body {
-    background: url('./bottles.jpg') no-repeat center center fixed;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    background-size: cover;
-    -o-background-size: cover;
-  }
