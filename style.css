@@ -43,3 +43,7 @@ p {
     font-size: 25px;
     text-align: center;
 }
+
+#filter{
+    padding-left: -10px;
+}
