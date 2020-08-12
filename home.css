@@ -2,12 +2,12 @@
 body {
   background: url("./bottles.jpg") no-repeat center center fixed;
   background-size: cover;
-  
+
 }
 
 /* Add some content on the video/page */
 .content {
-  
+
   bottom: 0;
   background: rgba(0, 0, 0, 0.2);
   color: #f1f1f1;
@@ -32,6 +32,7 @@ p {
   font-size: 25px;
   text-align: center;
 }
+
 /* Page End */
 
 
@@ -49,11 +50,24 @@ input:focus {
 textarea:focus,
 input:focus {
   font-family: 'Pacifico', cursive;
-    color: white;
+  color: white;
 }
 
-input, select, textarea{
+input,
+select,
+textarea {
   font-family: 'Pacifico', cursive;
   color: white;
 }
+
 /* Text Bar End */
+
+
+/* Text Bar Color Shenanigans */
+/* Text Bar End input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-text-fill-color: white !important;
+} */

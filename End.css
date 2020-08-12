@@ -1,5 +1,5 @@
 * Page Start */ body {
-    background: url("./bottles.jpg") no-repeat center center fixed;
+    background: ("./whiskey.jpg") no-repeat center center fixed;
     background-size: cover;
 
 }
@@ -27,7 +27,7 @@ h1 {
 
 h2 {
     font-family: 'Pacifico', cursive;
-    font-size: 95px;
+    font-size: 70px;
     text-align: center;
 
 }

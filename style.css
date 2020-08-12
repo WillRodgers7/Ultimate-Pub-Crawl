@@ -40,6 +40,7 @@ p {
     font-size: 25px;
     text-align: center;
 }
+
 /* Page End */
 
 /* Text Bar Start */
@@ -66,3 +67,12 @@ textarea {
     color: white;
 }
 /* Text Bar End */
+
+/* Text Bar Color Shenanigans */
+/* Text Bar End input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-text-fill-color: white !important;
+} */
