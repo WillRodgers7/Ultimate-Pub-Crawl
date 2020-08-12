@@ -1,13 +1,13 @@
-
+/* Page Start */
 body {
   background: url("./bottles.jpg") no-repeat center center fixed;
   background-size: cover;
   
 }
 
-/* Add some content at the bottom of the video/page */
+/* Add some content on the video/page */
 .content {
-  position: fixed;
+  
   bottom: 0;
   background: rgba(0, 0, 0, 0.2);
   color: #f1f1f1;
@@ -32,6 +32,10 @@ p {
   font-size: 25px;
   text-align: center;
 }
+/* Page End */
+
+
+/* Text Bar Start */
 
 label.active {
   color: orange !important;
@@ -41,3 +45,15 @@ input:focus {
   border-bottom: 1px solid orange !important;
   box-shadow: 0 1px 0 0 orange !important;
 }
+
+textarea:focus,
+input:focus {
+  font-family: 'Pacifico', cursive;
+    color: white;
+}
+
+input, select, textarea{
+  font-family: 'Pacifico', cursive;
+  color: white;
+}
+/* Text Bar End */

@@ -1,21 +1,12 @@
-/* Page Start */
-
-/* Style the video: 100% width and height to cover the entire window */
-#myVideo {
-
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    min-width: 100%;
-    min-height: 100%;
-
+* Page Start */ body {
+    background: url("./bottles.jpg") no-repeat center center fixed;
+    background-size: cover;
 
 }
 
-
 /* Add some content on the video/page */
 .content {
-    position: fixed;
+
     bottom: 0;
     background: rgba(0, 0, 0, 0.2);
     color: #f1f1f1;
@@ -34,13 +25,22 @@ h1 {
 
 }
 
+h2 {
+    font-family: 'Pacifico', cursive;
+    font-size: 95px;
+    text-align: center;
+
+}
+
 
 p {
     font-family: 'Francois One', sans-serif;
     font-size: 25px;
     text-align: center;
 }
+
 /* Page End */
+
 
 /* Text Bar Start */
 
@@ -65,4 +65,5 @@ textarea {
     font-family: 'Pacifico', cursive;
     color: white;
 }
+
 /* Text Bar End */
