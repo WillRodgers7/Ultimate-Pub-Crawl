@@ -1,5 +1,6 @@
 /* Style the video: 100% width and height to cover the entire window */
 #myVideo {
+
     position: fixed;
     right: 0;
     bottom: 0;
@@ -8,6 +9,7 @@
 
 
 }
+
 
 /* Add some content at the bottom of the video/page */
 .content {
@@ -22,6 +24,7 @@
 
 }
 
+
 h1 {
     font-family: 'Pacifico', cursive;
     font-size: 95px;
@@ -34,4 +37,13 @@ p {
     font-family: 'Francois One', sans-serif;
     font-size: 25px;
     text-align: center;
+}
+
+label.active {
+    color: orange !important;
+}
+
+input:focus {
+    border-bottom: 1px solid orange !important;
+    box-shadow: 0 1px 0 0 orange !important;
 }
