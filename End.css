@@ -1,5 +1,6 @@
-* Page Start */ body {
-    background: ("./whiskey.jpg") no-repeat center center fixed;
+/* Page Start */
+body {
+    background: url("whiskey.jpg") no-repeat center center fixed;
     background-size: cover;
 
 }
@@ -29,6 +30,18 @@ h2 {
     font-family: 'Pacifico', cursive;
     font-size: 70px;
     text-align: center;
+    display: inline;
+
+
+}
+
+#path {
+    font-family: 'Pacifico', cursive;
+    font-size: 90px;
+    text-align: center;
+    display: inline;
+    text-align: right;
+    padding-left: -30px;
 
 }
 
