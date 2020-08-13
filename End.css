@@ -29,20 +29,22 @@ h1 {
 #pubs {
     font-family: 'Pacifico', cursive;
     font-size: 70px;
-    display: inline;
+    display: inline-flex;
     text-align: left;
 
+ 
 
 }
 
 #path {
     font-family: 'Pacifico', cursive;
     font-size: 70px;
-    display: inline;
+    display: inline-flex;
     text-align: right;
-    
+
 
 }
+
 
 
 p {
