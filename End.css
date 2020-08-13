@@ -31,8 +31,9 @@ h1 {
     font-size: 70px;
     display: inline-flex;
     text-align: left;
+    margin-left: 200px;
 
- 
+
 
 }
 
@@ -41,6 +42,7 @@ h1 {
     font-size: 70px;
     display: inline-flex;
     text-align: right;
+    margin-left: 450px;
 
 
 }
