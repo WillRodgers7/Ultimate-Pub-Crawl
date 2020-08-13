@@ -1,6 +1,6 @@
 /* Page Start */
 body {
-    background: url("whiskey.jpg") no-repeat center center fixed;
+    background: url("./bottles.jpg") no-repeat center center fixed;
     background-size: cover;
 
 }
@@ -26,22 +26,21 @@ h1 {
 
 }
 
-h2 {
+#pubs {
     font-family: 'Pacifico', cursive;
     font-size: 70px;
-    text-align: center;
     display: inline;
+    text-align: left;
 
 
 }
 
 #path {
     font-family: 'Pacifico', cursive;
-    font-size: 90px;
-    text-align: center;
+    font-size: 70px;
     display: inline;
     text-align: right;
-    padding-left: -30px;
+    
 
 }
 
