@@ -52,7 +52,7 @@ function getCityId(cityName) {
       queryU =
         "https://developers.zomato.com/api/v2.1/search?entity_id=" +
         cityID +
-        "&entity_type=city&count=3&establishment_type=283";
+        "&entity_type=city&count=3&establishment_type=7";
 
       console.log("right before nested ajax call");
       $.ajax({
@@ -66,6 +66,71 @@ function getCityId(cityName) {
         success: function (response) {
           console.log("nested response object...");
           console.log(response);
+          // get long and lat of some restaurants
+
+          var long1 = response.restaurants[0].restaurant.location.longitude;
+          var lat1 = response.restaurants[0].restaurant.location.latitude;
+          var long2 = response.restaurants[1].restaurant.location.longitude;
+          var lat2 = response.restaurants[1].restaurant.location.latitude;
+          console.log("longitude: " + long1 + ", latitude: " + lat1);
+          console.log("longitude: " + long2 + ", latitude: " + lat2);
+          // able to get long at lat from the api call
+          // MAP API STUFF GOES HERE
+          // -----------------------------------------------------------------
+          var mapAPIKey = "85e9d3f13d3845e0a0ca48b327bba8c4";
+
+          // change the center to be one of the locations
+          var map = new mapboxgl.Map({
+            container: "my-map",
+            center: [long2, lat2],
+            zoom: 15,
+            style: `https://maps.geoapify.com/v1/styles/osm-bright/style.json?apiKey=${mapAPIKey}`,
+          });
+          map.addControl(new mapboxgl.NavigationControl());
+
+          map.on("load", function () {
+            var mode = "walk";
+            // location 1
+            // var lat1 = "34.14622";
+            // var long1 = "-118.141136";
+            // location 2
+            // var lat2 = "34.145501";
+            // var long2 = "-118.149101";
+
+            var routingURL = `https://api.geoapify.com/v1/routing?waypoints=${lat1},${long1}|${lat2},${long2}&mode=${mode}&apiKey=${mapAPIKey}`;
+            //This commented out link is the working example for reference
+            // var routingURL = "https://api.geoapify.com/v1/routing?waypoints=34.150079,-118.144247|34.153289,-118.148936&mode=drive&apiKey=85e9d3f13d3845e0a0ca48b327bba8c4"
+            console.log("this is right before nested MAPS api call.....");
+            $.ajax({
+              method: "GET",
+              url: routingURL,
+
+              success: function (response) {
+                map.addSource("route", { type: "geojson", data: response });
+                map.addLayer({
+                  id: "route",
+                  type: "line",
+                  source: "route",
+                  layout: {
+                    "line-join": "round",
+                    "line-cap": "round",
+                  },
+                  paint: {
+                    "line-color": "#888",
+                    "line-width": 8,
+                  },
+                });
+                console.log(response); // Full Object
+                //Calculate distance
+                var travelDistance = response.features[0].properties.distance;
+                console.log("Travel Distance: " + travelDistance + " metres");
+
+                //Calculate time
+                var travelMinutes = response.features[0].properties.time % 60;
+                console.log("Minutes: " + travelMinutes);
+              },
+            });
+          });
         },
       });
 
