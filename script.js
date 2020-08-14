@@ -1,31 +1,5 @@
-//this function sends the query by city chosen by user
-// function queryURL(userCity) {
-//   // userCity parameter holds the Zomato City ID
-//   // we will use this in the query builder string 'queryU'
-//   var apiKey = "2f0db10ea057aa7670716496e756f590";
-//   var queryU =
-//     "https://developers.zomato.com/api/v2.1/search?entity_id=281&entity_type=city&count=3&establishment_type=283";
-
-//   console.log("right before ajax call");
-//   $.ajax({
-//     headers: {
-//       Accept: "text/plain; charset=utf-8",
-//       "Content-Type": "text/plain; charset=utf-8",
-//       "user-key": "2f0db10ea057aa7670716496e756f590",
-//     },
-//     method: "GET",
-//     url: queryU,
-//     success: function (response) {
-//       console.log(response);
-//     },
-//   });
-// }
-
 // displays info received from Zomato API
-var displayResults = $(".results")
-
-// gets and returns the Zomato City(entity) ID by city name
-// begin recursive ajax calls
+var displayResults = $(".results");
 
 //  https://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
 // calculates distance from two points
@@ -76,6 +50,8 @@ function midpointCalculator(long1, lat1, long2, lat2) {
   return [long3, lat3];
 }
 
+// gets and returns the Zomato City(entity) ID by city name
+// begin recursive ajax calls. Get Entity ID -> Search query using the city ID -> call Maps API
 function getCityId(cityName) {
   var apiKey = "2f0db10ea057aa7670716496e756f590";
   // limits to one possible result
@@ -108,6 +84,7 @@ function getCityId(cityName) {
         "&entity_type=city&count=3&establishment_type=7";
 
       console.log("right before nested ajax call");
+
       $.ajax({
         headers: {
           Accept: "text/plain; charset=utf-8",
@@ -119,22 +96,18 @@ function getCityId(cityName) {
         success: function (response) {
           for (var i = 0; i < response.restaurants.length; i++) {
             const restaurant = response.restaurants[i].restaurant;
-            var establishment = restaurant.establishment[0]
-            var name = restaurant.name
-            var reviews = restaurant.user_rating.aggregate_rating
-            var cost = restaurant.average_cost_for_two
-            var hours = restaurant.timings
-            var address = restaurant.location.address
+            var establishment = restaurant.establishment[0];
+            var name = restaurant.name;
+            var reviews = restaurant.user_rating.aggregate_rating;
+            var cost = restaurant.average_cost_for_two;
+            var hours = restaurant.timings;
+            var address = restaurant.location.address;
 
             console.log(restaurant);
-            
-            $(".card-title").text(name)
-            var addLi = $("<li>").text("Address: " + address)
-            $(".list").append(addLi)
 
-
-            
-
+            $(".card-title").text(name);
+            var addLi = $("<li>").text("Address: " + address);
+            $(".list").append(addLi);
           }
           console.log("nested response object...");
           console.log(response);
@@ -158,7 +131,7 @@ function getCityId(cityName) {
             lat2,
             long2
           );
-          console.log(distanceInKm);
+          console.log("distance in km: " + distanceInKm);
           var customZoom;
 
           // switch statement for custom zoom
@@ -176,8 +149,21 @@ function getCityId(cityName) {
           //   default:
           //     break;
           // }
+
+          // instead of switch needs the conditionals
+          // change zoom according to how far away the endpoints are from each other
           if (distanceInKm < 1.5) {
+            customZoom = 15;
+          } else if (distanceInKm < 3) {
+            customZoom = 14;
+          } else if (distanceInKm < 8) {
+            customZoom = 13;
+          } else if (distanceInKm < 12) {
+            customZoom = 12;
+          } else {
+            customZoom = 11;
           }
+          console.log("conditional zoom: " + customZoom);
 
           console.log("longitude: " + long1 + ", latitude: " + lat1);
           console.log("longitude: " + long2 + ", latitude: " + lat2);
@@ -191,7 +177,7 @@ function getCityId(cityName) {
           var map = new mapboxgl.Map({
             container: "my-map",
             center: midpoint,
-            zoom: 15,
+            zoom: customZoom,
             style: `https://maps.geoapify.com/v1/styles/osm-bright/style.json?apiKey=${mapAPIKey}`,
           });
           map.addControl(new mapboxgl.NavigationControl());
@@ -270,23 +256,19 @@ $("#userForm").on("submit", function (event) {
   }
 });
 
-
-
-
-
 // Side bar nav start
-  document.addEventListener('DOMContentLoaded', function() {
-    var elems = document.querySelectorAll('.sidenav');
-    var instances = M.Sidenav.init(elems, {});
-  });
+document.addEventListener("DOMContentLoaded", function () {
+  var elems = document.querySelectorAll(".sidenav");
+  var instances = M.Sidenav.init(elems, {});
+});
 
-  // Initialize collapsible (uncomment the lines below if you use the dropdown variation)
-  // var collapsibleElem = document.querySelector('.collapsible');
-  // var collapsibleInstance = M.Collapsible.init(collapsibleElem, options);
+// Initialize collapsible (uncomment the lines below if you use the dropdown variation)
+// var collapsibleElem = document.querySelector('.collapsible');
+// var collapsibleInstance = M.Collapsible.init(collapsibleElem, options);
 
-  // Or with jQuery
+// Or with jQuery
 
-  $(document).ready(function(){
-    $('.sidenav').sidenav();
-  });
+$(document).ready(function () {
+  $(".sidenav").sidenav();
+});
 //Side bar nav end
