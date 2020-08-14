@@ -23,6 +23,32 @@
 
 // gets and returns the Zomato City(entity) ID by city name
 // begin recursive ajax calls
+
+function midpointCalculator(long1, lat1, long2, lat2) {
+  var dLon = long2 - long1;
+  dLon = dLon * (Math.PI / 180);
+  // dLon is now in radians
+
+  lat1 = lat1 * (Math.PI / 180);
+  lat2 = lat2 * (Math.PI / 180);
+  long1 = long1 * (Math.PI / 180);
+
+  var Bx = Math.cos(lat2) * Math.cos(dLon);
+  var By = Math.cos(lat2) * Math.sin(dLon);
+  var lat3 = Math.atan2(
+    Math.sin(lat1) + Math.sin(lat2),
+    Math.sqrt((Math.cos(lat1) + Bx) * (Math.cos(lat1) + Bx) + By * By)
+  );
+  var long3 = long1 + Math.atan2(By, Math.cos(lat1) + Bx);
+
+  // now convert back to degrees
+  lat3 = lat3 * (180 / Math.PI);
+  long3 = long3 * (180 / Math.PI);
+
+  console.log("new longitude: " + long3 + ", new latitude: " + lat3);
+  return [long3, lat3];
+}
+
 function getCityId(cityName) {
   var apiKey = "2f0db10ea057aa7670716496e756f590";
   // limits to one possible result
@@ -68,12 +94,20 @@ function getCityId(cityName) {
           console.log(response);
           // get long and lat of some restaurants
 
+          // hardcoded: testing first two results
           var long1 = response.restaurants[0].restaurant.location.longitude;
           var lat1 = response.restaurants[0].restaurant.location.latitude;
           var long2 = response.restaurants[1].restaurant.location.longitude;
           var lat2 = response.restaurants[1].restaurant.location.latitude;
+
+          // for (let i = 0; i < response.restaurants.length; i++) {}
+
+          // this will be an array
+          var midpoint = midpointCalculator(long1, lat1, long2, lat2);
+
           console.log("longitude: " + long1 + ", latitude: " + lat1);
           console.log("longitude: " + long2 + ", latitude: " + lat2);
+          console.log("outside of the function...." + midpoint);
           // able to get long at lat from the api call
           // MAP API STUFF GOES HERE
           // -----------------------------------------------------------------
@@ -82,7 +116,7 @@ function getCityId(cityName) {
           // change the center to be one of the locations
           var map = new mapboxgl.Map({
             container: "my-map",
-            center: [long2, lat2],
+            center: midpoint,
             zoom: 15,
             style: `https://maps.geoapify.com/v1/styles/osm-bright/style.json?apiKey=${mapAPIKey}`,
           });
