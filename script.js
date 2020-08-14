@@ -21,6 +21,9 @@
 //   });
 // }
 
+// displays info received from Zomato API
+var displayResults = $(".results")
+
 // gets and returns the Zomato City(entity) ID by city name
 // begin recursive ajax calls
 
@@ -90,6 +93,25 @@ function getCityId(cityName) {
         method: "GET",
         url: queryU,
         success: function (response) {
+          for (var i = 0; i < response.restaurants.length; i++) {
+            const restaurant = response.restaurants[i].restaurant;
+            var establishment = restaurant.establishment[0]
+            var name = restaurant.name
+            var reviews = restaurant.user_rating.aggregate_rating
+            var cost = restaurant.average_cost_for_two
+            var hours = restaurant.timings
+            var address = restaurant.location.address
+
+            console.log(restaurant);
+            
+            $(".card-title").text(name)
+            var addLi = $("<li>").text("Address: " + address)
+            $(".list").append(addLi)
+
+
+            
+
+          }
           console.log("nested response object...");
           console.log(response);
           // get long and lat of some restaurants
