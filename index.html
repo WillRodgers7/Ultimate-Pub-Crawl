@@ -17,6 +17,17 @@
       rel="stylesheet"
     />
 
+    <!-- links to map stuff -->
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/mapbox-gl/1.9.0/mapbox-gl.js"
+    ></script>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/mapbox-gl/1.9.0/mapbox-gl.css"
+    />
+
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
@@ -45,7 +56,7 @@
             <div class="input-field col s12">
               <!-- Current imput turn auto complete off -->
               <!-- <input id="textarea1" type="text" class="materialize-textarea"></input> -->
-              <input id="textarea1" type="text" class="materialize-textarea" autocomplete="off"></input>
+              <input id="textarea1" type="text" class="materialize-textarea" autocomplete="off" value="Los Angeles"></input>
               <label for="textarea1">Your City Here</label>
             </div>
           </form>
@@ -58,7 +69,15 @@
       <br />
       <p>The ultimate bar hopping experience for your night out</p>
       <br />
-      
+      <!-- going to add a basic containers for the map -->
+      <!-- need to change the css to solve this -->
+      <!-- MAP GOES HERE -->
+    <div class="container">
+      <div id="my-map"></div>
+    </div>
+
+
+
     </div>
     
     
