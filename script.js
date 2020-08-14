@@ -24,6 +24,29 @@
 // gets and returns the Zomato City(entity) ID by city name
 // begin recursive ajax calls
 
+//  https://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
+// calculates distance from two points
+function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+  var R = 6371; // Radius of the earth in km
+  var dLat = deg2rad(lat2 - lat1); // deg2rad below
+  var dLon = deg2rad(lon2 - lon1);
+  var a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(deg2rad(lat1)) *
+      Math.cos(deg2rad(lat2)) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  var d = R * c; // Distance in km
+  return d;
+}
+
+function deg2rad(deg) {
+  return deg * (Math.PI / 180);
+}
+
+// https://stackoverflow.com/questions/4656802/midpoint-between-two-latitude-and-longitude
+// this code was taken from a stack overflow question to calculate midpoint between two points
 function midpointCalculator(long1, lat1, long2, lat2) {
   var dLon = long2 - long1;
   dLon = dLon * (Math.PI / 180);
@@ -46,6 +69,7 @@ function midpointCalculator(long1, lat1, long2, lat2) {
   long3 = long3 * (180 / Math.PI);
 
   console.log("new longitude: " + long3 + ", new latitude: " + lat3);
+  // returns coords as an array
   return [long3, lat3];
 }
 
@@ -104,6 +128,34 @@ function getCityId(cityName) {
 
           // this will be an array
           var midpoint = midpointCalculator(long1, lat1, long2, lat2);
+
+          // calculate distance from the endpoints
+          var distanceInKm = getDistanceFromLatLonInKm(
+            lat1,
+            long1,
+            lat2,
+            long2
+          );
+          console.log(distanceInKm);
+          var customZoom;
+
+          // switch statement for custom zoom
+          // switch (distanceInKm) {
+          //   case :
+          //       customZoom =
+          //     break;
+          //   case value:
+
+          //     break;
+          //   case value:
+
+          //     break;
+
+          //   default:
+          //     break;
+          // }
+          if (distanceInKm < 1.5) {
+          }
 
           console.log("longitude: " + long1 + ", latitude: " + lat1);
           console.log("longitude: " + long2 + ", latitude: " + lat2);
