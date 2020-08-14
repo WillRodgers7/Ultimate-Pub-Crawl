@@ -1,21 +1,13 @@
 /* Page Start */
-
-/* Style the video: 100% width and height to cover the entire window */
-#myVideo {
-
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    min-width: 100%;
-    min-height: 100%;
-
+body {
+    background: url("./bottles.jpg") no-repeat center center fixed;
+    background-size: cover;
 
 }
 
-
 /* Add some content on the video/page */
 .content {
-    position: fixed;
+
     bottom: 0;
     background: rgba(0, 0, 0, 0.2);
     color: #f1f1f1;
@@ -34,6 +26,28 @@ h1 {
 
 }
 
+#pubs {
+    font-family: 'Pacifico', cursive;
+    font-size: 70px;
+    display: inline-flex;
+    text-align: left;
+    margin-left: 200px;
+
+
+
+}
+
+#path {
+    font-family: 'Pacifico', cursive;
+    font-size: 70px;
+    display: inline-flex;
+    text-align: right;
+    margin-left: 450px;
+
+
+}
+
+
 
 p {
     font-family: 'Francois One', sans-serif;
@@ -42,6 +56,7 @@ p {
 }
 
 /* Page End */
+
 
 /* Text Bar Start */
 
@@ -66,13 +81,5 @@ textarea {
     font-family: 'Pacifico', cursive;
     color: white;
 }
-/* Text Bar End */
 
-/* Text Bar Color Shenanigans */
-/* Text Bar End input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
-    transition: background-color 5000s ease-in-out 0s;
-    -webkit-text-fill-color: white !important;
-} */
+/* Text Bar End */
