@@ -2,6 +2,9 @@
 var displayResults = $(".results");
 // global vars
 var barHopNumber = 3; //start with 3 bars minimum
+// will need an offset number for number of bars wanted after filter/updated user parameters
+// 0 for 3 spots, 1 for 4 spots, 2 for 5 spots
+var offsetNumBars = 0;
 
 //  https://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
 // calculates distance from two points
@@ -69,7 +72,7 @@ function getRandomRestaurants(resArray) {
     var restaurant = resArray[id];
     randomizedArray.push(restaurant);
     resArray.splice(id, 1);
-  } while (resArray.length > 17); // this for three bars; we have 20 results now
+  } while (resArray.length > 17 - offsetNumBars); // this for three bars; we have 20 results now
 
   console.log("right before return randomized array---> " + randomizedArray);
   return randomizedArray;
