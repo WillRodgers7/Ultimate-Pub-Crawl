@@ -5,6 +5,10 @@ var barHopNumber = 3; //start with 3 bars minimum
 // will need an offset number for number of bars wanted after filter/updated user parameters
 // 0 for 3 spots, 1 for 4 spots, 2 for 5 spots
 var offsetNumBars = 0;
+var displayResults = $(".results")
+var city;
+// gets and returns the Zomato City(entity) ID by city name
+// begin recursive ajax calls
 
 //  https://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
 // calculates distance from two points
@@ -15,9 +19,9 @@ function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
   var a =
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
     Math.cos(deg2rad(lat1)) *
-      Math.cos(deg2rad(lat2)) *
-      Math.sin(dLon / 2) *
-      Math.sin(dLon / 2);
+    Math.cos(deg2rad(lat2)) *
+    Math.sin(dLon / 2) *
+    Math.sin(dLon / 2);
   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   var d = R * c; // Distance in km
   return d;
@@ -98,7 +102,7 @@ function getCityId(cityName) {
       // this console.log can display the city ID
       console.log(
         "This should give me the city ID ===> " +
-          response.location_suggestions[0].id
+        response.location_suggestions[0].id
       );
       var cityID = response.location_suggestions[0].id;
       // -----------------------------------------------------------------------
@@ -122,24 +126,20 @@ function getCityId(cityName) {
         method: "GET",
         url: queryU,
         success: function (response) {
-          // ADRIEN CODE ----------------------------------------------
-          // for (var i = 0; i < response.restaurants.length; i++) {
-          //   const restaurant = response.restaurants[i].restaurant;
-          //   var establishment = restaurant.establishment[0];
-          //   var name = restaurant.name;
-          //   var reviews = restaurant.user_rating.aggregate_rating;
-          //   var cost = restaurant.average_cost_for_two;
-          //   var hours = restaurant.timings;
-          //   var address = restaurant.location.address;
+          for (var i = 0; i < response.restaurants.length; i++) {
+            const restaurant = response.restaurants[i].restaurant;
+            var establishment = restaurant.establishment[0]
+            var name = restaurant.name
+            var reviews = restaurant.user_rating.aggregate_rating
+            var cost = restaurant.average_cost_for_two
+            var hours = restaurant.timings
+            var address = restaurant.location.address
 
-          //   console.log(restaurant);
+            console.log(restaurant);
 
-          //   $(".card-title").text(name);
-          //   var addLi = $("<li>").text("Address: " + address);
-          //   $(".list").append(addLi);
-          // }
-          console.log("nested response object...");
-          console.log(response);
+            $(".card-title").text(name)
+            var addLi = $("<li>").text("Address: " + address)
+            $(".list").append(addLi)
 
           console.log(
             "above random func call with restaurant array--->" +
@@ -222,7 +222,10 @@ function getCityId(cityName) {
               url: routingURL,
 
               success: function (response) {
-                map.addSource("route", { type: "geojson", data: response });
+                map.addSource("route", {
+                  type: "geojson",
+                  data: response
+                });
                 map.addLayer({
                   id: "route",
                   type: "line",
@@ -259,7 +262,8 @@ function getCityId(cityName) {
 $("#userForm").on("submit", function (event) {
   event.preventDefault();
   console.log("submitted");
-  var city = $("#textarea1").val().trim();
+  city = $("#textarea1").val().trim();
+  localStorage.setItem("currentCity", city);
   console.log(city);
   if (city == "") {
     return;
@@ -275,12 +279,29 @@ $("#userForm").on("submit", function (event) {
     // ajax call to get the zomato city ID, then run another ajax call to get the pubs in the city
     // because of multiple ajax calls that are dependent on the API responses
     // queryURL(getCityId(city));
+
+
+    // Connecting Index and Home Page (Begining)
+    location.href = "./home.html";
   }
+  // saving text area
+  console.log(city);
+  var cityGrab = document.getElementById("currentCity");
+  cityGrab.textContent = `Your Current City Is: ${city}`;
+  $("#textarea2").val(localStorage.getItem("currentCity"));
+
+  
+ 
+
 });
+// Connecting Index and Home Page (End)
+
+
+
 
 // Side bar nav start
-document.addEventListener("DOMContentLoaded", function () {
-  var elems = document.querySelectorAll(".sidenav");
+document.addEventListener('DOMContentLoaded', function () {
+  var elems = document.querySelectorAll('.sidenav');
   var instances = M.Sidenav.init(elems, {});
 });
 
@@ -291,6 +312,9 @@ document.addEventListener("DOMContentLoaded", function () {
 // Or with jQuery
 
 $(document).ready(function () {
-  $(".sidenav").sidenav();
+  $('.sidenav').sidenav();
 });
+// save text area
+$("#textarea2").val(localStorage.getItem("currentCity"));
+
 //Side bar nav end
