@@ -8,6 +8,8 @@ var offsetNumBars = 0;
 // will variable to hold city from index to pass into home.html
 var city;
 var typeOfEstab = 7; // 7 for bars to start, .....
+var mainCityLat; // grabbed lat and long from first api call
+var mainCityLong;
 
 //  https://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
 // calculates distance from two points
@@ -84,10 +86,13 @@ function getRandomRestaurants(resArray) {
 // gets and returns the Zomato City(entity) ID by city name
 // begin recursive ajax calls. Get Entity ID -> Search query using the city ID -> call Maps API
 function getCityId(cityName) {
+  console.log(cityName);
   var apiKey = "2f0db10ea057aa7670716496e756f590";
   // limits to one possible result
   var queryU =
-    "https://developers.zomato.com/api/v2.1/cities?q=" + cityName + "&count=1";
+    "https://developers.zomato.com/api/v2.1/locations?q=" +
+    cityName +
+    "&count=1";
   $.ajax({
     headers: {
       Accept: "text/plain; charset=utf-8",
@@ -101,9 +106,14 @@ function getCityId(cityName) {
       // this console.log can display the city ID
       console.log(
         "This should give me the city ID ===> " +
-          response.location_suggestions[0].id
+          response.location_suggestions[0].entity_id
       );
-      var cityID = response.location_suggestions[0].id;
+      var cityID = response.location_suggestions[0].entity_id;
+      mainCityLat = response.location_suggestions[0].latitude;
+      mainCityLong = response.location_suggestions[0].longitude;
+      console.log(
+        "latitude of main city" + response.location_suggestions[0].latitude
+      );
       // -----------------------------------------------------------------------
       // another ajax call!
       // now use a search GET query after getting the zomato city ID
