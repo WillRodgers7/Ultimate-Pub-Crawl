@@ -140,7 +140,7 @@ function getCityId(cityName) {
             $(".card-title").text(name)
             var addLi = $("<li>").text("Address: " + address)
             $(".list").append(addLi)
-
+          };
           console.log(
             "above random func call with restaurant array--->" +
               response.restaurants
@@ -306,8 +306,8 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // Initialize collapsible (uncomment the lines below if you use the dropdown variation)
-// var collapsibleElem = document.querySelector('.collapsible');
-// var collapsibleInstance = M.Collapsible.init(collapsibleElem, options);
+var collapsibleElem = document.querySelector('.collapsible');
+var collapsibleInstance = M.Collapsible.init(collapsibleElem, options);
 
 // Or with jQuery
 
