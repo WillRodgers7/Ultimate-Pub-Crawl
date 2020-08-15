@@ -254,6 +254,7 @@ $("#userForm").on("submit", function (event) {
   event.preventDefault();
   console.log("submitted");
   city = $("#textarea1").val().trim();
+  localStorage.setItem("currentCity", city);
   console.log(city);
   if (city == "") {
     return;
@@ -269,17 +270,22 @@ $("#userForm").on("submit", function (event) {
     // ajax call to get the zomato city ID, then run another ajax call to get the pubs in the city
     // because of multiple ajax calls that are dependent on the API responses
     // queryURL(getCityId(city));
+
+
+    // Connecting Index and Home Page (Begining)
     location.href = "./home.html";
   }
-    console.log(city);
-    var cityGrab = document.getElementById("currentCity");
-    cityGrab.textContent = `Your Current City Is: ${city}`;
+  // saving text area
+  console.log(city);
+  var cityGrab = document.getElementById("currentCity");
+  cityGrab.textContent = `Your Current City Is: ${city}`;
+  $("#textarea2").val(localStorage.getItem("currentCity"));
 
-    
-    $("#textarea2").text(city);
   
-});
+ 
 
+});
+// Connecting Index and Home Page (End)
 
 
 
@@ -299,4 +305,7 @@ document.addEventListener('DOMContentLoaded', function () {
 $(document).ready(function () {
   $('.sidenav').sidenav();
 });
+// save text area
+$("#textarea2").val(localStorage.getItem("currentCity"));
+
 //Side bar nav end
