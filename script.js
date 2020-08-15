@@ -5,10 +5,11 @@ var barHopNumber = 3; //start with 3 bars minimum
 // will need an offset number for number of bars wanted after filter/updated user parameters
 // 0 for 3 spots, 1 for 4 spots, 2 for 5 spots
 var offsetNumBars = 0;
-var displayResults = $(".results")
+// will variable to hold city from index to pass into home.html
 var city;
-// gets and returns the Zomato City(entity) ID by city name
-// begin recursive ajax calls
+var typeOfEstab = 7; // 7 for bars to start, .....
+var mainCityLat; // grabbed lat and long from first api call
+var mainCityLong;
 
 //  https://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
 // calculates distance from two points
@@ -19,9 +20,9 @@ function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
   var a =
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
     Math.cos(deg2rad(lat1)) *
-    Math.cos(deg2rad(lat2)) *
-    Math.sin(dLon / 2) *
-    Math.sin(dLon / 2);
+      Math.cos(deg2rad(lat2)) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   var d = R * c; // Distance in km
   return d;
@@ -61,7 +62,7 @@ function midpointCalculator(long1, lat1, long2, lat2) {
 
 // takes in an array of restaurants and randomizes them
 // returns randomized choices of restaurants in array form
-// can change depending on how many bars they want to hop; barHopNumber
+// can change depending on how many bars they want to hop; offset variable
 function getRandomRestaurants(resArray) {
   console.log(
     "this is in the randomize func. should be an array---->" + resArray
@@ -85,10 +86,14 @@ function getRandomRestaurants(resArray) {
 // gets and returns the Zomato City(entity) ID by city name
 // begin recursive ajax calls. Get Entity ID -> Search query using the city ID -> call Maps API
 function getCityId(cityName) {
+  console.log(cityName);
   var apiKey = "2f0db10ea057aa7670716496e756f590";
   // limits to one possible result
   var queryU =
-    "https://developers.zomato.com/api/v2.1/cities?q=" + cityName + "&count=1";
+    "https://developers.zomato.com/api/v2.1/locations?query=" +
+    cityName +
+    "&count=1";
+
   $.ajax({
     headers: {
       Accept: "text/plain; charset=utf-8",
@@ -102,9 +107,14 @@ function getCityId(cityName) {
       // this console.log can display the city ID
       console.log(
         "This should give me the city ID ===> " +
-        response.location_suggestions[0].id
+          response.location_suggestions[0].entity_id
       );
-      var cityID = response.location_suggestions[0].id;
+      var cityID = response.location_suggestions[0].entity_id;
+      mainCityLat = response.location_suggestions[0].latitude;
+      mainCityLong = response.location_suggestions[0].longitude;
+      console.log(
+        "latitude of main city" + response.location_suggestions[0].latitude
+      );
       // -----------------------------------------------------------------------
       // another ajax call!
       // now use a search GET query after getting the zomato city ID
@@ -113,7 +123,8 @@ function getCityId(cityName) {
       queryU =
         "https://developers.zomato.com/api/v2.1/search?entity_id=" +
         cityID +
-        "&entity_type=city&establishment_type=7";
+        "&entity_type=city&establishment_type=" +
+        typeOfEstab;
       // removed 3 count limit of search results
       console.log("right before nested ajax call");
 
@@ -128,12 +139,12 @@ function getCityId(cityName) {
         success: function (response) {
           for (var i = 0; i < response.restaurants.length; i++) {
             const restaurant = response.restaurants[i].restaurant;
-            var establishment = restaurant.establishment[0]
-            var name = restaurant.name
-            var reviews = restaurant.user_rating.aggregate_rating
-            var cost = restaurant.average_cost_for_two
-            var hours = restaurant.timings
-            var address = restaurant.location.address
+            var establishment = restaurant.establishment[0];
+            var name = restaurant.name;
+            var reviews = restaurant.user_rating.aggregate_rating;
+            var cost = restaurant.average_cost_for_two;
+            var hours = restaurant.timings;
+            var address = restaurant.location.address;
 
             console.log(restaurant);
 
@@ -224,7 +235,7 @@ function getCityId(cityName) {
               success: function (response) {
                 map.addSource("route", {
                   type: "geojson",
-                  data: response
+                  data: response,
                 });
                 map.addLayer({
                   id: "route",
@@ -273,35 +284,40 @@ $("#userForm").on("submit", function (event) {
     console.log("getting city ID...");
     // this console.log will be undefined because asynchronous behaviour
     // the function will still run though...
-    console.log(getCityId(city));
+    // console.log(getCityId(city));
     console.log("i should print before responses...!");
     // passing an ID to another function...aysynchonicity will cause problems
     // ajax call to get the zomato city ID, then run another ajax call to get the pubs in the city
     // because of multiple ajax calls that are dependent on the API responses
     // queryURL(getCityId(city));
 
-
     // Connecting Index and Home Page (Begining)
-    location.href = "./home.html";
+    console.log("YOOOOOOOO");
+
+    window.location.href = "./home.html";
+    // console.log(city);
+    // var cityGrab = document.getElementById("currentCity");
+    // cityGrab.textContent = `Your Current City Is: ${city}`;
+    // var ourCity = $("#textarea2").val(localStorage.getItem("currentCity"));
+    // // execute call on the home page
+    // console.log($("#textarea2").val());
+    // getCityId(ourCity);
+    // event.preventDefault();
   }
   // saving text area
-  console.log(city);
-  var cityGrab = document.getElementById("currentCity");
-  cityGrab.textContent = `Your Current City Is: ${city}`;
-  $("#textarea2").val(localStorage.getItem("currentCity"));
-
-  
- 
-
+  // console.log(city);
+  // var cityGrab = document.getElementById("currentCity");
+  // cityGrab.textContent = `Your Current City Is: ${city}`;
+  // var ourCity = $("#textarea2").val(localStorage.getItem("currentCity"));
+  // // execute call on the home page
+  // console.log($("#textarea2").val());
+  // getCityId(ourCity);
 });
 // Connecting Index and Home Page (End)
 
-
-
-
 // Side bar nav start
-document.addEventListener('DOMContentLoaded', function () {
-  var elems = document.querySelectorAll('.sidenav');
+document.addEventListener("DOMContentLoaded", function () {
+  var elems = document.querySelectorAll(".sidenav");
   var instances = M.Sidenav.init(elems, {});
 });
 
@@ -312,11 +328,25 @@ var collapsibleInstance = M.Collapsible.init(collapsibleElem, {});
 // Or with jQuery
 
 $(document).ready(function () {
-  $('.sidenav').sidenav();
+  console.log(location.href + " askldmfklahsdf");
+  // var stringURL = (location.href).toString
+  // $(".sidenav").sidenav();
+  if (location.href.includes("/home.html")) {
+    console.log("OMMMMGGGGGGGGGGGGGGGGG");
+    var cityGrab = document.getElementById("currentCity");
+    cityGrab.textContent = `Your Current City Is: ${city}`;
+    var ourCity = $("#textarea2").val();
+    // execute call on the home page
+    console.log(ourCity);
+    getCityId(ourCity);
+  } else {
+    return;
+  }
 });
 
 // save text area
 $("#textarea2").val(localStorage.getItem("currentCity"));
+// getCityId($("#textarea2").val());
 
 //Side bar nav end
 
