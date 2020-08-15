@@ -55,6 +55,27 @@ p {
     text-align: center;
 }
 
+.card-title {
+    font-family: "Pacifico", cursive;
+    font-size: 40px;
+    text-align: center;
+    color: orange !important;
+  
+  }
+  
+  ul {
+    font-family: 'Francois One', sans-serif;
+    font-size: 5px !important;
+    text-align: center;
+  
+  }
+  
+  .card-action {
+    font-family: 'Francois One', sans-serif;
+    font-size: 20px;
+    text-align: center;
+  }
+
 /* Page End */
 
 
