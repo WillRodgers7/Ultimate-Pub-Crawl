@@ -52,6 +52,29 @@ function midpointCalculator(long1, lat1, long2, lat2) {
   return [long3, lat3];
 }
 
+// takes in an array of restaurants and randomizes them
+// returns randomized choices of restaurants in array form
+// can change depending on how many bars they want to hop; barHopNumber
+function getRandomRestaurants(resArray) {
+  console.log(
+    "this is in the randomize func. should be an array---->" + resArray
+  );
+  var randomizedArray = [];
+  // go through array and select random res 3 times, without duplicates
+  // this is done by splicing out a choice, and then choosing from the rest
+  //  https://stackoverflow.com/questions/34913566/random-pick-from-array-without-duplicate
+  // how to pick from random in array without duplicates
+  do {
+    var id = Math.floor(Math.random() * resArray.length);
+    var restaurant = resArray[id];
+    randomizedArray.push(restaurant);
+    resArray.splice(id, 1);
+  } while (resArray.length > 17); // this for three bars; we have 20 results now
+
+  console.log("right before return randomized array---> " + randomizedArray);
+  return randomizedArray;
+}
+
 // gets and returns the Zomato City(entity) ID by city name
 // begin recursive ajax calls. Get Entity ID -> Search query using the city ID -> call Maps API
 function getCityId(cityName) {
@@ -83,8 +106,8 @@ function getCityId(cityName) {
       queryU =
         "https://developers.zomato.com/api/v2.1/search?entity_id=" +
         cityID +
-        "&entity_type=city&count=3&establishment_type=7";
-
+        "&entity_type=city&establishment_type=7";
+      // removed 3 count limit of search results
       console.log("right before nested ajax call");
 
       $.ajax({
@@ -96,34 +119,43 @@ function getCityId(cityName) {
         method: "GET",
         url: queryU,
         success: function (response) {
-          for (var i = 0; i < response.restaurants.length; i++) {
-            const restaurant = response.restaurants[i].restaurant;
-            var establishment = restaurant.establishment[0];
-            var name = restaurant.name;
-            var reviews = restaurant.user_rating.aggregate_rating;
-            var cost = restaurant.average_cost_for_two;
-            var hours = restaurant.timings;
-            var address = restaurant.location.address;
+          // ADRIEN CODE ----------------------------------------------
+          // for (var i = 0; i < response.restaurants.length; i++) {
+          //   const restaurant = response.restaurants[i].restaurant;
+          //   var establishment = restaurant.establishment[0];
+          //   var name = restaurant.name;
+          //   var reviews = restaurant.user_rating.aggregate_rating;
+          //   var cost = restaurant.average_cost_for_two;
+          //   var hours = restaurant.timings;
+          //   var address = restaurant.location.address;
 
-            console.log(restaurant);
+          //   console.log(restaurant);
 
-            $(".card-title").text(name);
-            var addLi = $("<li>").text("Address: " + address);
-            $(".list").append(addLi);
-          }
+          //   $(".card-title").text(name);
+          //   var addLi = $("<li>").text("Address: " + address);
+          //   $(".list").append(addLi);
+          // }
           console.log("nested response object...");
           console.log(response);
+
+          console.log(
+            "above random func call with restaurant array--->" +
+              response.restaurants
+          );
+
+          var randomResArray = getRandomRestaurants(response.restaurants);
+          console.log("outside func call---> " + randomResArray);
+
           // get long and lat of some restaurants
-          var long1 = response.restaurants[0].restaurant.location.longitude;
-          var lat1 = response.restaurants[0].restaurant.location.latitude;
+          var long1 = randomResArray[0].restaurant.location.longitude;
+          var lat1 = randomResArray[0].restaurant.location.latitude;
 
           // middle bars
-          var middleLong1 =
-            response.restaurants[1].restaurant.location.longitude;
-          var middleLat1 = response.restaurants[1].restaurant.location.latitude;
+          var middleLong1 = randomResArray[1].restaurant.location.longitude;
+          var middleLat1 = randomResArray[1].restaurant.location.latitude;
 
-          var long2 = response.restaurants[2].restaurant.location.longitude;
-          var lat2 = response.restaurants[2].restaurant.location.latitude;
+          var long2 = randomResArray[2].restaurant.location.longitude;
+          var lat2 = randomResArray[2].restaurant.location.latitude;
           // adding another point; 3 points minimum
 
           // this will be an array
