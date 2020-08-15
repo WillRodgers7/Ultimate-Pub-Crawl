@@ -274,7 +274,7 @@ $("#userForm").on("submit", function (event) {
     console.log("getting city ID...");
     // this console.log will be undefined because asynchronous behaviour
     // the function will still run though...
-    console.log(getCityId(city));
+    // console.log(getCityId(city));
     console.log("i should print before responses...!");
     // passing an ID to another function...aysynchonicity will cause problems
     // ajax call to get the zomato city ID, then run another ajax call to get the pubs in the city
@@ -289,6 +289,8 @@ $("#userForm").on("submit", function (event) {
   var cityGrab = document.getElementById("currentCity");
   cityGrab.textContent = `Your Current City Is: ${city}`;
   $("#textarea2").val(localStorage.getItem("currentCity"));
+  // execute call on the home page
+  // getCityId($("#textarea2").val());
 });
 // Connecting Index and Home Page (End)
 
@@ -309,5 +311,6 @@ $(document).ready(function () {
 });
 // save text area
 $("#textarea2").val(localStorage.getItem("currentCity"));
+getCityId($("#textarea2").val());
 
 //Side bar nav end
