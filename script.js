@@ -96,21 +96,21 @@ function getCityId(cityName) {
         method: "GET",
         url: queryU,
         success: function (response) {
-          for (var i = 0; i < response.restaurants.length; i++) {
-            const restaurant = response.restaurants[i].restaurant;
-            var establishment = restaurant.establishment[0];
-            var name = restaurant.name;
-            var reviews = restaurant.user_rating.aggregate_rating;
-            var cost = restaurant.average_cost_for_two;
-            var hours = restaurant.timings;
-            var address = restaurant.location.address;
+          // for (var i = 0; i < response.restaurants.length; i++) {
+          //   const restaurant = response.restaurants[i].restaurant;
+          //   var establishment = restaurant.establishment[0];
+          //   var name = restaurant.name;
+          //   var reviews = restaurant.user_rating.aggregate_rating;
+          //   var cost = restaurant.average_cost_for_two;
+          //   var hours = restaurant.timings;
+          //   var address = restaurant.location.address;
 
-            console.log(restaurant);
+          //   console.log(restaurant);
 
-            $(".card-title").text(name);
-            var addLi = $("<li>").text("Address: " + address);
-            $(".list").append(addLi);
-          }
+          //   $(".card-title").text(name);
+          //   var addLi = $("<li>").text("Address: " + address);
+          //   $(".list").append(addLi);
+          // }
           console.log("nested response object...");
           console.log(response);
           // get long and lat of some restaurants
@@ -130,23 +130,26 @@ function getCityId(cityName) {
           var midpoint = midpointCalculator(long1, lat1, long2, lat2);
 
           // calculate distance from the endpoints
-          var distanceInKm = getDistanceFromLatLonInKm(
+          var totalDistanceInKm = getDistanceFromLatLonInKm(
             lat1,
             long1,
-            lat2,
-            long2
+            middleLat1,
+            middleLong1
           );
-          console.log("distance in km: " + distanceInKm);
+          totalDistanceInKm =
+            totalDistanceInKm +
+            getDistanceFromLatLonInKm(middleLat1, middleLong1, lat2, long2);
+          // add more calls to calculate distance, but build it like: 1st to 2nd point, 2nd to 3rd point total distance.
+          console.log("distance in km: " + totalDistanceInKm);
           var customZoom;
-
           // change zoom according to how far away the endpoints are from each other
-          if (distanceInKm < 1.5) {
+          if (totalDistanceInKm < 1.5) {
             customZoom = 15;
-          } else if (distanceInKm < 3) {
+          } else if (totalDistanceInKm < 3) {
             customZoom = 14;
-          } else if (distanceInKm < 8) {
+          } else if (totalDistanceInKm < 6.5) {
             customZoom = 13;
-          } else if (distanceInKm < 12) {
+          } else if (totalDistanceInKm < 12) {
             customZoom = 12;
           } else {
             customZoom = 11;
