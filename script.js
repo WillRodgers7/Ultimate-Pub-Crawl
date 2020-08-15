@@ -1,27 +1,10 @@
-//this function sends the query by city chosen by user
-// function queryURL(userCity) {
-//   // userCity parameter holds the Zomato City ID
-//   // we will use this in the query builder string 'queryU'
-//   var apiKey = "2f0db10ea057aa7670716496e756f590";
-//   var queryU =
-//     "https://developers.zomato.com/api/v2.1/search?entity_id=281&entity_type=city&count=3&establishment_type=283";
-
-//   console.log("right before ajax call");
-//   $.ajax({
-//     headers: {
-//       Accept: "text/plain; charset=utf-8",
-//       "Content-Type": "text/plain; charset=utf-8",
-//       "user-key": "2f0db10ea057aa7670716496e756f590",
-//     },
-//     method: "GET",
-//     url: queryU,
-//     success: function (response) {
-//       console.log(response);
-//     },
-//   });
-// }
-
 // displays info received from Zomato API
+var displayResults = $(".results");
+// global vars
+var barHopNumber = 3; //start with 3 bars minimum
+// will need an offset number for number of bars wanted after filter/updated user parameters
+// 0 for 3 spots, 1 for 4 spots, 2 for 5 spots
+var offsetNumBars = 0;
 var displayResults = $(".results")
 var city;
 // gets and returns the Zomato City(entity) ID by city name
@@ -76,6 +59,31 @@ function midpointCalculator(long1, lat1, long2, lat2) {
   return [long3, lat3];
 }
 
+// takes in an array of restaurants and randomizes them
+// returns randomized choices of restaurants in array form
+// can change depending on how many bars they want to hop; barHopNumber
+function getRandomRestaurants(resArray) {
+  console.log(
+    "this is in the randomize func. should be an array---->" + resArray
+  );
+  var randomizedArray = [];
+  // go through array and select random res 3 times, without duplicates
+  // this is done by splicing out a choice, and then choosing from the rest
+  //  https://stackoverflow.com/questions/34913566/random-pick-from-array-without-duplicate
+  // how to pick from random in array without duplicates
+  do {
+    var id = Math.floor(Math.random() * resArray.length);
+    var restaurant = resArray[id];
+    randomizedArray.push(restaurant);
+    resArray.splice(id, 1);
+  } while (resArray.length > 17 - offsetNumBars); // this for three bars; we have 20 results now
+
+  console.log("right before return randomized array---> " + randomizedArray);
+  return randomizedArray;
+}
+
+// gets and returns the Zomato City(entity) ID by city name
+// begin recursive ajax calls. Get Entity ID -> Search query using the city ID -> call Maps API
 function getCityId(cityName) {
   var apiKey = "2f0db10ea057aa7670716496e756f590";
   // limits to one possible result
@@ -97,7 +105,7 @@ function getCityId(cityName) {
         response.location_suggestions[0].id
       );
       var cityID = response.location_suggestions[0].id;
-
+      // -----------------------------------------------------------------------
       // another ajax call!
       // now use a search GET query after getting the zomato city ID
       // reassigning the query string var
@@ -105,9 +113,10 @@ function getCityId(cityName) {
       queryU =
         "https://developers.zomato.com/api/v2.1/search?entity_id=" +
         cityID +
-        "&entity_type=city&count=3&establishment_type=7";
-
+        "&entity_type=city&establishment_type=7";
+      // removed 3 count limit of search results
       console.log("right before nested ajax call");
+
       $.ajax({
         headers: {
           Accept: "text/plain; charset=utf-8",
@@ -132,57 +141,61 @@ function getCityId(cityName) {
             var addLi = $("<li>").text("Address: " + address)
             $(".list").append(addLi)
 
+          console.log(
+            "above random func call with restaurant array--->" +
+              response.restaurants
+          );
 
+          var randomResArray = getRandomRestaurants(response.restaurants);
+          console.log("outside func call---> " + randomResArray);
 
-
-          }
-          console.log("nested response object...");
-          console.log(response);
           // get long and lat of some restaurants
+          var long1 = randomResArray[0].restaurant.location.longitude;
+          var lat1 = randomResArray[0].restaurant.location.latitude;
 
-          // hardcoded: testing first two results
-          var long1 = response.restaurants[0].restaurant.location.longitude;
-          var lat1 = response.restaurants[0].restaurant.location.latitude;
-          var long2 = response.restaurants[1].restaurant.location.longitude;
-          var lat2 = response.restaurants[1].restaurant.location.latitude;
+          // middle bars
+          var middleLong1 = randomResArray[1].restaurant.location.longitude;
+          var middleLat1 = randomResArray[1].restaurant.location.latitude;
 
-          // for (let i = 0; i < response.restaurants.length; i++) {}
+          var long2 = randomResArray[2].restaurant.location.longitude;
+          var lat2 = randomResArray[2].restaurant.location.latitude;
+          // adding another point; 3 points minimum
 
           // this will be an array
           var midpoint = midpointCalculator(long1, lat1, long2, lat2);
 
           // calculate distance from the endpoints
-          var distanceInKm = getDistanceFromLatLonInKm(
+          var totalDistanceInKm = getDistanceFromLatLonInKm(
             lat1,
             long1,
-            lat2,
-            long2
+            middleLat1,
+            middleLong1
           );
-          console.log(distanceInKm);
+          totalDistanceInKm =
+            totalDistanceInKm +
+            getDistanceFromLatLonInKm(middleLat1, middleLong1, lat2, long2);
+          // add more calls to calculate distance, but build it like: 1st to 2nd point, 2nd to 3rd point total distance.
+          console.log("distance in km: " + totalDistanceInKm);
           var customZoom;
-
-          // switch statement for custom zoom
-          // switch (distanceInKm) {
-          //   case :
-          //       customZoom =
-          //     break;
-          //   case value:
-
-          //     break;
-          //   case value:
-
-          //     break;
-
-          //   default:
-          //     break;
-          // }
-          if (distanceInKm < 1.5) {}
+          // change zoom according to how far away the endpoints are from each other
+          if (totalDistanceInKm < 1.5) {
+            customZoom = 15;
+          } else if (totalDistanceInKm < 3) {
+            customZoom = 14;
+          } else if (totalDistanceInKm < 6.5) {
+            customZoom = 13;
+          } else if (totalDistanceInKm < 12) {
+            customZoom = 12;
+          } else {
+            customZoom = 11;
+          }
+          console.log("conditional zoom: " + customZoom);
 
           console.log("longitude: " + long1 + ", latitude: " + lat1);
           console.log("longitude: " + long2 + ", latitude: " + lat2);
           console.log("outside of the function...." + midpoint);
           // able to get long at lat from the api call
-          // MAP API STUFF GOES HERE
+          // MAP API STUFF GOES HERE, another AJAX call
           // -----------------------------------------------------------------
           var mapAPIKey = "85e9d3f13d3845e0a0ca48b327bba8c4";
 
@@ -190,21 +203,17 @@ function getCityId(cityName) {
           var map = new mapboxgl.Map({
             container: "my-map",
             center: midpoint,
-            zoom: 15,
+            zoom: customZoom,
             style: `https://maps.geoapify.com/v1/styles/osm-bright/style.json?apiKey=${mapAPIKey}`,
           });
           map.addControl(new mapboxgl.NavigationControl());
 
           map.on("load", function () {
             var mode = "walk";
-            // location 1
-            // var lat1 = "34.14622";
-            // var long1 = "-118.141136";
-            // location 2
-            // var lat2 = "34.145501";
-            // var long2 = "-118.149101";
 
-            var routingURL = `https://api.geoapify.com/v1/routing?waypoints=${lat1},${long1}|${lat2},${long2}&mode=${mode}&apiKey=${mapAPIKey}`;
+            // will need conditionals based on how many bars to hop
+            // this has three
+            var routingURL = `https://api.geoapify.com/v1/routing?waypoints=${lat1},${long1}|${middleLat1},${middleLong1}|${lat2},${long2}&mode=${mode}&apiKey=${mapAPIKey}`;
             //This commented out link is the working example for reference
             // var routingURL = "https://api.geoapify.com/v1/routing?waypoints=34.150079,-118.144247|34.153289,-118.148936&mode=drive&apiKey=85e9d3f13d3845e0a0ca48b327bba8c4"
             console.log("this is right before nested MAPS api call.....");
