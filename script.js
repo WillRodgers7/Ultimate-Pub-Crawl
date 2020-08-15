@@ -23,10 +23,33 @@
 
 // displays info received from Zomato API
 var displayResults = $(".results")
-
+var city;
 // gets and returns the Zomato City(entity) ID by city name
 // begin recursive ajax calls
 
+//  https://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
+// calculates distance from two points
+function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+  var R = 6371; // Radius of the earth in km
+  var dLat = deg2rad(lat2 - lat1); // deg2rad below
+  var dLon = deg2rad(lon2 - lon1);
+  var a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(deg2rad(lat1)) *
+    Math.cos(deg2rad(lat2)) *
+    Math.sin(dLon / 2) *
+    Math.sin(dLon / 2);
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  var d = R * c; // Distance in km
+  return d;
+}
+
+function deg2rad(deg) {
+  return deg * (Math.PI / 180);
+}
+
+// https://stackoverflow.com/questions/4656802/midpoint-between-two-latitude-and-longitude
+// this code was taken from a stack overflow question to calculate midpoint between two points
 function midpointCalculator(long1, lat1, long2, lat2) {
   var dLon = long2 - long1;
   dLon = dLon * (Math.PI / 180);
@@ -49,6 +72,7 @@ function midpointCalculator(long1, lat1, long2, lat2) {
   long3 = long3 * (180 / Math.PI);
 
   console.log("new longitude: " + long3 + ", new latitude: " + lat3);
+  // returns coords as an array
   return [long3, lat3];
 }
 
@@ -70,7 +94,7 @@ function getCityId(cityName) {
       // this console.log can display the city ID
       console.log(
         "This should give me the city ID ===> " +
-          response.location_suggestions[0].id
+        response.location_suggestions[0].id
       );
       var cityID = response.location_suggestions[0].id;
 
@@ -103,13 +127,13 @@ function getCityId(cityName) {
             var address = restaurant.location.address
 
             console.log(restaurant);
-            
+
             $(".card-title").text(name)
             var addLi = $("<li>").text("Address: " + address)
             $(".list").append(addLi)
 
 
-            
+
 
           }
           console.log("nested response object...");
@@ -126,6 +150,33 @@ function getCityId(cityName) {
 
           // this will be an array
           var midpoint = midpointCalculator(long1, lat1, long2, lat2);
+
+          // calculate distance from the endpoints
+          var distanceInKm = getDistanceFromLatLonInKm(
+            lat1,
+            long1,
+            lat2,
+            long2
+          );
+          console.log(distanceInKm);
+          var customZoom;
+
+          // switch statement for custom zoom
+          // switch (distanceInKm) {
+          //   case :
+          //       customZoom =
+          //     break;
+          //   case value:
+
+          //     break;
+          //   case value:
+
+          //     break;
+
+          //   default:
+          //     break;
+          // }
+          if (distanceInKm < 1.5) {}
 
           console.log("longitude: " + long1 + ", latitude: " + lat1);
           console.log("longitude: " + long2 + ", latitude: " + lat2);
@@ -162,7 +213,10 @@ function getCityId(cityName) {
               url: routingURL,
 
               success: function (response) {
-                map.addSource("route", { type: "geojson", data: response });
+                map.addSource("route", {
+                  type: "geojson",
+                  data: response
+                });
                 map.addLayer({
                   id: "route",
                   type: "line",
@@ -199,7 +253,8 @@ function getCityId(cityName) {
 $("#userForm").on("submit", function (event) {
   event.preventDefault();
   console.log("submitted");
-  var city = $("#textarea1").val().trim();
+  city = $("#textarea1").val().trim();
+  localStorage.setItem("currentCity", city);
   console.log(city);
   if (city == "") {
     return;
@@ -215,26 +270,42 @@ $("#userForm").on("submit", function (event) {
     // ajax call to get the zomato city ID, then run another ajax call to get the pubs in the city
     // because of multiple ajax calls that are dependent on the API responses
     // queryURL(getCityId(city));
-  }
-});
 
+
+    // Connecting Index and Home Page (Begining)
+    location.href = "./home.html";
+  }
+  // saving text area
+  console.log(city);
+  var cityGrab = document.getElementById("currentCity");
+  cityGrab.textContent = `Your Current City Is: ${city}`;
+  $("#textarea2").val(localStorage.getItem("currentCity"));
+
+  
+ 
+
+});
+// Connecting Index and Home Page (End)
 
 
 
 
 // Side bar nav start
-  document.addEventListener('DOMContentLoaded', function() {
-    var elems = document.querySelectorAll('.sidenav');
-    var instances = M.Sidenav.init(elems, {});
-  });
+document.addEventListener('DOMContentLoaded', function () {
+  var elems = document.querySelectorAll('.sidenav');
+  var instances = M.Sidenav.init(elems, {});
+});
 
-  // Initialize collapsible (uncomment the lines below if you use the dropdown variation)
-  // var collapsibleElem = document.querySelector('.collapsible');
-  // var collapsibleInstance = M.Collapsible.init(collapsibleElem, options);
+// Initialize collapsible (uncomment the lines below if you use the dropdown variation)
+// var collapsibleElem = document.querySelector('.collapsible');
+// var collapsibleInstance = M.Collapsible.init(collapsibleElem, options);
 
-  // Or with jQuery
+// Or with jQuery
 
-  $(document).ready(function(){
-    $('.sidenav').sidenav();
-  });
+$(document).ready(function () {
+  $('.sidenav').sidenav();
+});
+// save text area
+$("#textarea2").val(localStorage.getItem("currentCity"));
+
 //Side bar nav end
