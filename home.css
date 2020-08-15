@@ -73,6 +73,30 @@ textarea {
 
 /* Text Bar End */
 
+/* Map Start */
+
+.container {
+  position: relative;
+  top: 5%;
+  left: 0%;
+  width: 75%;
+  height: 75%;
+  background-color: aqua;
+  margin-bottom: 2rem;
+}
+
+#my-map {
+  position: relative;
+  top: 12.5%;
+  left: 12.5%;
+  width: 75%;
+  height: 75%;
+}
+
+/* Map End */
+
+
+
 
 /* Text Bar Color Shenanigans */
 /* Text Bar End input:-webkit-autofill,
