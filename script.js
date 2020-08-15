@@ -105,8 +105,8 @@ function getCityId(cityName) {
             console.log(restaurant);
             
             $(".card-title").text(name)
-            var addLi = $("<li>").text("Address: " + address)
-            $(".list").append(addLi)
+            // var addLi = $("<li>").text("Address: " + address)
+            // $(".list").append(addLi)
 
 
             
