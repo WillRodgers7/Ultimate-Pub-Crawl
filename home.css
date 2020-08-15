@@ -100,6 +100,13 @@ textarea {
   color: white;
 }
 
+h3 {
+  font-family: 'Pacifico', cursive;
+  text-align: left;
+  font-size: 15px;
+  color: gray;
+}
+
 /* Text Bar End */
 
 /* Map Start */
