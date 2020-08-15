@@ -5,10 +5,9 @@ var barHopNumber = 3; //start with 3 bars minimum
 // will need an offset number for number of bars wanted after filter/updated user parameters
 // 0 for 3 spots, 1 for 4 spots, 2 for 5 spots
 var offsetNumBars = 0;
-var displayResults = $(".results");
+// will variable to hold city from index to pass into home.html
 var city;
-// gets and returns the Zomato City(entity) ID by city name
-// begin recursive ajax calls
+var typeOfEstab = 7; // 7 for bars to start, .....
 
 //  https://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
 // calculates distance from two points
@@ -61,7 +60,7 @@ function midpointCalculator(long1, lat1, long2, lat2) {
 
 // takes in an array of restaurants and randomizes them
 // returns randomized choices of restaurants in array form
-// can change depending on how many bars they want to hop; barHopNumber
+// can change depending on how many bars they want to hop; offset variable
 function getRandomRestaurants(resArray) {
   console.log(
     "this is in the randomize func. should be an array---->" + resArray
@@ -113,7 +112,8 @@ function getCityId(cityName) {
       queryU =
         "https://developers.zomato.com/api/v2.1/search?entity_id=" +
         cityID +
-        "&entity_type=city&establishment_type=7";
+        "&entity_type=city&establishment_type=" +
+        typeOfEstab;
       // removed 3 count limit of search results
       console.log("right before nested ajax call");
 
