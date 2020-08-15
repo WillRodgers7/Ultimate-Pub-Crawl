@@ -3,10 +3,10 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link
+		<!-- <link
 			rel="stylesheet"
 			href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
-		/>
+		/> -->
 		<link
 			href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
 			rel="stylesheet"
@@ -22,8 +22,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
     <!-- Compiled and minified JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-            
+	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script> -->
+
+
+          <link rel="stylesheet" href="./noUiSlider-14.6.0/distribute/nouislider.min.css">  
 
 		<link rel="stylesheet" href="home.css" />
 		<title>Ultimate Pub Crawl</title>
@@ -62,12 +64,6 @@
 			  </div>
 		</div>
 			<!-- Text Area End -->
-		<!-- Your current City  begginig-->
-		<div class="row">
-			<h3 id="currentCity"></h3>
-
-		</div>
-		<!-- Your current City end -->
 
 			<!--Filter Side Nav Start -->
 
@@ -76,15 +72,68 @@
 				<div class="background">
 					<img src="./whiskey.jpg" id="whiskeyImg">
 				</div>
-				<a href="#user"><img class="circle" src=""></a>
+				<!-- <a href="#user"><img class="circle" src=""></a> -->
 				<a href="#name"><span class="white-text name">John Doe</span></a>
 				<a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a>
 				</div></li>
-				<li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
-				<li><a href="#!">Second Link</a></li>
-				<li><div class="divider"></div></li>
-				<li><a class="subheader">Subheader</a></li>
-				<li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
+				<!--types start -->
+
+				<li>
+				<div class="input-field col s12">
+					<select multiple>
+					  <option value="" disabled selected>Choose your option</option>
+					  <option value="1">Pubs</option>
+					  <option value="2">Bars</option>
+					  <option value="3">Restaurant</option>
+					  <option value="4">Wineries</option>
+					  <option value="5">Breweries</option>
+					  <option value="6">Distilleries</option>
+					</select>
+					<label>Types of Locations</label>
+				  </div>
+				</li>
+				  <!-- types end -->
+
+				<!-- price start -->
+				  <li>
+					<div class="input-field col s12">
+						<select multiple>
+						  <option value="" disabled selected>Choose your price</option>
+						  <option value="1">$</option>
+						  <option value="2">$$</option>
+						  <option value="3">$$$</option>
+						  <option value="4">$$$$</option>
+
+						</select>
+						<label>Choose your price</label>
+					  </div>
+					</li>
+					  <!--price end -->
+
+				<!-- price start -->
+				  <li>
+					<div class="input-field col s12">
+						<select multiple>
+						  <option value="" disabled selected>Choose your rating</option>
+						  <option value="1">*</option>
+						  <option value="2">**</option>
+						  <option value="3">***</option>
+						  <option value="4">****</option>
+
+						</select>
+						<label>Choose your rating</label>
+					  </div>
+					</li>
+				<!--price end -->
+
+				<div id="test-slider"></div>
+				<form action="#">
+					<p class="range-field">
+					  <input type="range" id="test5" min="0" max="100" />
+					</p>
+				  </form>
+
+				
 			</ul>
 			
 		
@@ -227,6 +276,16 @@
 		integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
 		crossorigin="anonymous"
 	  ></script>
+
+	 <!-- Compiled and minified CSS -->
+	 <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"> -->
+
+	 <!-- Compiled and minified JavaScript -->
+	 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+	 <script src="./noUiSlider-14.6.0/distribute/nouislider.min.js"></script>
+
+
 	  <script src="script.js"></script>
 	  
 
