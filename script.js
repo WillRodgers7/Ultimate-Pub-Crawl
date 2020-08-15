@@ -90,9 +90,10 @@ function getCityId(cityName) {
   var apiKey = "2f0db10ea057aa7670716496e756f590";
   // limits to one possible result
   var queryU =
-    "https://developers.zomato.com/api/v2.1/locations?q=" +
+    "https://developers.zomato.com/api/v2.1/locations?query=" +
     cityName +
     "&count=1";
+
   $.ajax({
     headers: {
       Accept: "text/plain; charset=utf-8",
@@ -292,15 +293,26 @@ $("#userForm").on("submit", function (event) {
     // queryURL(getCityId(city));
 
     // Connecting Index and Home Page (Begining)
-    location.href = "./home.html";
+    console.log("YOOOOOOOO");
+
+    window.location.href = "./home.html";
+    // console.log(city);
+    // var cityGrab = document.getElementById("currentCity");
+    // cityGrab.textContent = `Your Current City Is: ${city}`;
+    // var ourCity = $("#textarea2").val(localStorage.getItem("currentCity"));
+    // // execute call on the home page
+    // console.log($("#textarea2").val());
+    // getCityId(ourCity);
+    // event.preventDefault();
   }
   // saving text area
-  console.log(city);
-  var cityGrab = document.getElementById("currentCity");
-  cityGrab.textContent = `Your Current City Is: ${city}`;
-  $("#textarea2").val(localStorage.getItem("currentCity"));
-  // execute call on the home page
-  // getCityId($("#textarea2").val());
+  // console.log(city);
+  // var cityGrab = document.getElementById("currentCity");
+  // cityGrab.textContent = `Your Current City Is: ${city}`;
+  // var ourCity = $("#textarea2").val(localStorage.getItem("currentCity"));
+  // // execute call on the home page
+  // console.log($("#textarea2").val());
+  // getCityId(ourCity);
 });
 // Connecting Index and Home Page (End)
 
@@ -317,10 +329,23 @@ document.addEventListener("DOMContentLoaded", function () {
 // Or with jQuery
 
 $(document).ready(function () {
-  $(".sidenav").sidenav();
+  console.log(location.href + " askldmfklahsdf");
+  // var stringURL = (location.href).toString
+  // $(".sidenav").sidenav();
+  if (location.href.includes("/home.html")) {
+    console.log("OMMMMGGGGGGGGGGGGGGGGG");
+    var cityGrab = document.getElementById("currentCity");
+    cityGrab.textContent = `Your Current City Is: ${city}`;
+    var ourCity = $("#textarea2").val();
+    // execute call on the home page
+    console.log(ourCity);
+    getCityId(ourCity);
+  } else {
+    return;
+  }
 });
 // save text area
 $("#textarea2").val(localStorage.getItem("currentCity"));
-getCityId($("#textarea2").val());
+// getCityId($("#textarea2").val());
 
 //Side bar nav end
