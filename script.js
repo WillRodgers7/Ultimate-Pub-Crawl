@@ -148,11 +148,10 @@ function getCityId(cityName) {
 
             console.log(restaurant);
 
-            $(".card-title").text(name);
-            var addLi = $("<li>").text("Address: " + address);
-            $(".list").append(addLi);
-          }
-
+            $(".card-title").text(name)
+            var addLi = $("<li>").text("Address: " + address)
+            $(".list").append(addLi)
+          };
           console.log(
             "above random func call with restaurant array--->" +
               response.restaurants
@@ -323,8 +322,8 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // Initialize collapsible (uncomment the lines below if you use the dropdown variation)
-// var collapsibleElem = document.querySelector('.collapsible');
-// var collapsibleInstance = M.Collapsible.init(collapsibleElem, options);
+var collapsibleElem = document.querySelector('.collapsible');
+var collapsibleInstance = M.Collapsible.init(collapsibleElem, {});
 
 // Or with jQuery
 
@@ -344,8 +343,37 @@ $(document).ready(function () {
     return;
   }
 });
+
 // save text area
 $("#textarea2").val(localStorage.getItem("currentCity"));
 // getCityId($("#textarea2").val());
 
 //Side bar nav end
+
+// nav bar drop downs start
+
+$(document).ready(function(){
+  console.log(1,2,3,4)
+  $('select').formSelect();
+}); 
+// nav bar drop downs end
+
+// nav bar slider start
+
+var slider = document.getElementById('test-slider');
+noUiSlider.create(slider, {
+ start: [20, 80],
+ connect: true,
+ step: 1,
+ orientation: 'horizontal', // 'horizontal' or 'vertical'
+ range: {
+   'min': 0,
+   'max': 100
+ },
+//  format: wNumb({
+//    decimals: 0
+//  })
+});
+      
+
+// nav bar slider end
