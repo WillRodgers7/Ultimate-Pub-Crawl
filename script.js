@@ -273,7 +273,12 @@ function getCityId(cityName) {
 $("#userForm").on("submit", function (event) {
   event.preventDefault();
   console.log("submitted");
-  city = $("#textarea1").val().trim();
+  if (location.href.includes("/index.html")) {
+    city = $("#textarea1").val().trim();
+  }
+  else if (location.href.includes("/home.html")) {
+    city = $("#textarea2").val().trim();
+  }
   localStorage.setItem("currentCity", city);
   console.log(city);
   if (city == "") {
