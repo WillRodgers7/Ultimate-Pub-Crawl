@@ -5,9 +5,13 @@ var barHopNumber = 3; //start with 3 bars minimum
 // will need an offset number for number of bars wanted after filter/updated user parameters
 // 0 for 3 spots, 1 for 4 spots, 2 for 5 spots
 var offsetNumBars = 0;
+
 // will variable to hold city from index to pass into home.html
 var city;
-var typeOfEstab = 7; // 7 for bars to start, .....
+// var typeOfEstab = 7; // 7 for bars to start, .....
+// lets do a search query instead with the keywords, bar, brewery, winery, pub..
+var searchQ = "bar"; // initialize to bar
+var searchRadius = 3000; // initialize call to 5000m or 5 km
 var mainCityLat; // grabbed lat and long from first api call
 var mainCityLong;
 
@@ -121,12 +125,17 @@ function getCityId(cityName) {
       // reassigning the query string var
       // will need to modify this depending on user need and other parameters
       queryU =
-        "https://developers.zomato.com/api/v2.1/search?entity_id=" +
-        cityID +
-        "&entity_type=city&establishment_type=" +
-        typeOfEstab;
+        "https://developers.zomato.com/api/v2.1/search?q=" +
+        searchQ +
+        "&lat=" +
+        mainCityLat +
+        "&lon=" +
+        mainCityLong +
+        "&radius=" +
+        searchRadius;
       // removed 3 count limit of search results
-      console.log("right before nested ajax call");
+      console.log("right before SEARCH ajax call");
+      console.log("search radius is ======= " + searchRadius);
 
       $.ajax({
         headers: {
@@ -138,15 +147,16 @@ function getCityId(cityName) {
         url: queryU,
         success: function (response) {
           for (var i = 0; i < response.restaurants.length; i++) {
-            const restaurant = response.restaurants[i].restaurant;
-            var establishment = restaurant.establishment[0];
-            var name = restaurant.name;
-            var reviews = restaurant.user_rating.aggregate_rating;
-            var cost = restaurant.average_cost_for_two;
-            var hours = restaurant.timings;
-            var address = restaurant.location.address;
+            // changed from const to var; renames to thisRestaurant
+            var thisRestaurant = response.restaurants[i].restaurant;
+            var establishment = thisRestaurant.establishment[0];
+            var name = thisRestaurant.name;
+            var reviews = thisRestaurant.user_rating.aggregate_rating;
+            var cost = thisRestaurant.average_cost_for_two;
+            var hours = thisRestaurant.timings;
+            var address = thisRestaurant.location.address;
 
-            console.log(restaurant);
+            console.log("name of this restaurant in for loop: " + name);
 
             $(".card-title").text(name);
             var addLi = $("<li>").text("Address: " + address);
@@ -174,6 +184,9 @@ function getCityId(cityName) {
 
           // this will be an array
           var midpoint = midpointCalculator(long1, lat1, long2, lat2);
+          console.log(
+            "outside of the midpoint call function ===== " + midpoint
+          );
 
           // calculate distance from the endpoints
           var totalDistanceInKm = getDistanceFromLatLonInKm(
@@ -193,18 +206,19 @@ function getCityId(cityName) {
             customZoom = 15;
           } else if (totalDistanceInKm < 3) {
             customZoom = 14;
-          } else if (totalDistanceInKm < 6.5) {
+          } else if (totalDistanceInKm < 5) {
             customZoom = 13;
-          } else if (totalDistanceInKm < 12) {
+          } else if (totalDistanceInKm < 11) {
             customZoom = 12;
-          } else {
+          } else if (totalDistanceInKm < 14) {
             customZoom = 11;
+          } else {
+            customZoom = 10;
           }
           console.log("conditional zoom: " + customZoom);
 
           console.log("longitude: " + long1 + ", latitude: " + lat1);
           console.log("longitude: " + long2 + ", latitude: " + lat2);
-          console.log("outside of the function...." + midpoint);
           // able to get long at lat from the api call
           // MAP API STUFF GOES HERE, another AJAX call
           // -----------------------------------------------------------------
@@ -275,8 +289,7 @@ $("#userForm").on("submit", function (event) {
   console.log("submitted");
   if (location.href.includes("/index.html")) {
     city = $("#textarea1").val().trim();
-  }
-  else if (location.href.includes("/home.html")) {
+  } else if (location.href.includes("/home.html")) {
     city = $("#textarea2").val().trim();
   }
   localStorage.setItem("currentCity", city);
@@ -299,7 +312,13 @@ $("#userForm").on("submit", function (event) {
     // Connecting Index and Home Page (Begining)
     console.log("YOOOOOOOO");
 
-    window.location.href = "./home.html";
+    // when we submit, if we are in index...then go to home page.
+    // but if we are in home.html (else), then run the getcityID script! prevents page from reloading completely
+    if (location.href.includes("/index.html")) {
+      window.location.href = "./home.html";
+    } else {
+      getCityId(city);
+    }
     // console.log(city);
     // var cityGrab = document.getElementById("currentCity");
     // cityGrab.textContent = `Your Current City Is: ${city}`;
@@ -349,7 +368,7 @@ var collapsibleInstance = M.Collapsible.init(collapsibleElem, {});
 //   }
 // });
 
-// save text area
+// get locally stored city every time we load page
 $("#textarea2").val(localStorage.getItem("currentCity"));
 // getCityId($("#textarea2").val());
 
@@ -359,7 +378,6 @@ $("#textarea2").val(localStorage.getItem("currentCity"));
 
 $(document).ready(function () {
   console.log(1, 2, 3, 4);
-
   $(document).ready(function () {
     $("select").formSelect();
     console.log(location.href + " askldmfklahsdf");
