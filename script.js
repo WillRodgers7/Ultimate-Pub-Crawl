@@ -19,6 +19,8 @@ var mapAPIKey = "85e9d3f13d3845e0a0ca48b327bba8c4";
 var mode = "walk";
 var routingURL; // global var holding the dynamic ROUTING API CALL
 
+var instanceSelect;
+
 //  https://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
 // calculates distance from two points
 function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
@@ -371,6 +373,12 @@ document.addEventListener("DOMContentLoaded", function () {
 var collapsibleElem = document.querySelector(".collapsible");
 var collapsibleInstance = M.Collapsible.init(collapsibleElem, {});
 
+// initialize form select
+// document.addEventListener("DOMContentLoaded", function () {
+//   var elems = document.querySelectorAll("select");
+//   instanceSelect = M.FormSelect.init(elems, options);
+// });
+
 // get locally stored city every time we load page
 $("#textarea2").val(localStorage.getItem("currentCity"));
 // getCityId($("#textarea2").val());
@@ -382,6 +390,19 @@ $(document).ready(function () {
   console.log(1, 2, 3, 4);
   $(document).ready(function () {
     $("select").formSelect();
+    $("#generateBtn").on("click", function (event) {
+      // event.stopPropagation();
+      event.preventDefault();
+      console.log("hey yaaaaaaaaaaaa");
+
+      console.log("hey yaaaaaaaaaaaa");
+
+      // var alcSelect = instanceSelect.get
+      var instance = M.FormSelect.getInstance($("select"));
+      var alcSelect = instance.getSelectedValues();
+      console.log(alcSelect);
+    });
+
     console.log(location.href + " askldmfklahsdf");
     // var stringURL = (location.href).toString
     // $(".sidenav").sidenav();
@@ -418,3 +439,16 @@ noUiSlider.create(slider, {
 });
 
 // nav bar slider end
+
+// generate button
+// $("#generateBtn").on("click", function (event) {
+//   event.stopPropagation();
+//   console.log("hey yaaaaaaaaaaaa");
+//   event.preventDefault();
+//   console.log("hey yaaaaaaaaaaaa");
+
+//   // var alcSelect = instanceSelect.get
+//   var instance = M.FormSelect.getInstance($("select"));
+//   var alcSelect = instance.getSelectedValues();
+//   console.log("this is the alc selections: " + alcSelect);
+// });

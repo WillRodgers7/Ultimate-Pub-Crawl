@@ -90,14 +90,15 @@
 
 				<li>
 				<div class="input-field col s12">
-					<select multiple>
+					<select multiple id="alcoholType">
 					  <option value="" disabled selected>Choose your option</option>
-					  <option value="1">Pubs</option>
-					  <option value="2">Bars</option>
-					  <option value="3">Restaurant</option>
-					  <option value="4">Wineries</option>
-					  <option value="5">Breweries</option>
-					  <option value="6">Distilleries</option>
+					  <option value="pub" >Pubs</option>
+					  <option value="bar" >Bars</option>
+					  <option value="wine" >Wine Bars</option>
+					  <option value="brewery" >Breweries</option>
+					  <option value="beer garden" >Beer Gardens</option>
+					  <option value="cocktail" >Cocktail Bar</option>
+
 					</select>
 					<label>Types of Locations</label>
 				  </div>
@@ -137,13 +138,19 @@
 				<!--price end -->
 
 				<!-- slider start -->
-				<h3>milage</h3>
+				<h3>mileage</h3>
 				<form action="#">
 					<p class="range-field">
-					  <input type="range" id="test5" min="0" max="100" />
+					  <input type="range" id="test5" min="0" max="6" value="1" step="1" />
 					</p>
 				  </form>
 				<!-- slider end -->
+
+				<!-- save start -->
+
+				<a href="#" class="waves-effect waves-light btn-large" id="generateBtn">Generate</a>
+
+				<!-- save end -->
 				
 			</ul>
 			
