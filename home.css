@@ -46,10 +46,15 @@ ul {
 }
 
 #whiskeyImg {
-  /* max-width: 100%; */
+  max-width: 100%;
   height: auto;
   /* height: 100%; */
-  width: 100%;
+  /* width: 100%; */
+
+}
+
+#imgDiv {
+  padding: 120px 120px 120px 120px 120px;
 
 }
 
@@ -100,21 +105,21 @@ h3 {
 /* Map Start */
 
 #mapContainer {
-  position: relative;
-  top: 5%;
-  left: 0%;
-  width: 500px;
-  height: 500px;
-  background-color: aqua;
+  position: absolute;
+  top: 75%;
+  left: 45%;
+  width: 700px;
+  height: 700px;
+  background-color: orange;
   margin-bottom: 2rem;
 }
 
 #my-map {
   position: relative;
-  top: 12.5%;
-  left: 12.5%;
-  width: 75%;
-  height: 75%;
+  top: 2.5%;
+  left: 2.5%;
+  width: 95%;
+  height: 95%;
 }
 
 /* Map End */
