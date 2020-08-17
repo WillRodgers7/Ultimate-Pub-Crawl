@@ -250,6 +250,29 @@ function getCityId(cityName) {
                     "line-width": 8,
                   },
                 });
+                map.loadImage(
+                  'https://api.geoapify.com/v1/icon/?type=awesome&color=%23467cda&icon=glass-martini&apiKey=85e9d3f13d3845e0a0ca48b327bba8c4', function(error,image) {
+                    if (error) throw error;
+                    map.addImage('custom-marker', image);
+                    map.addSource('points', {"type": "geojson", "data": response});
+                    map.addLayer({
+                      'id': 'points',
+                      'type': 'symbol',
+                      'source': 'points',
+                      'layout': {
+                      'icon-image': 'custom-marker',
+                      // get the title name from the source's "title" property
+                      'text-field': ['get', 'title'],
+                      'text-font': [
+                      'Open Sans Semibold',
+                      'Arial Unicode MS Bold'
+                      ],
+                      'text-offset': [0, 1.25],
+                      'text-anchor': 'top'
+                    }
+                  });
+                })
+                
                 console.log(response); // Full Object
                 //Calculate distance
                 var travelDistance = response.features[0].properties.distance;
