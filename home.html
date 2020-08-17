@@ -82,8 +82,14 @@
 					<img src="./whiskey.jpg" id="whiskeyImg">
 				</div>
 				<!-- <a href="#user"><img class="circle" src=""></a> -->
-				<a href="#name"><span class="white-text name">John Doe</span></a>
-				<a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a>
+				<!-- <a href="#name"><span class="white-text name">John Doe</span></a>
+				<a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a> -->
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
 				</div></li>
 
 				<!--types start -->
@@ -91,7 +97,7 @@
 				<li>
 				<div class="input-field col s12">
 					<select multiple id="alcoholType">
-					  <option value="" disabled selected>Choose your option</option>
+					  <option value="" disabled>Choose Your Options</option>
 					  <option value="pub" >Pubs</option>
 					  <option value="bar" >Bars</option>
 					  <option value="wine" >Wine Bars</option>
@@ -108,15 +114,13 @@
 				<!-- price start -->
 				  <li>
 					<div class="input-field col s12">
-						<select multiple>
-						  <option value="" disabled selected>Choose your price</option>
-						  <option value="1">$</option>
-						  <option value="2">$$</option>
-						  <option value="3">$$$</option>
-						  <option value="4">$$$$</option>
-
+						<select id="crawlLength">
+						  <option value="" disabled>Choose Length of Pub Crawl</option>
+						  <option value="three">3</option>
+						  <option value="four">4</option>
+						  <option value="five">5</option>
 						</select>
-						<label>Choose your price</label>
+						<label>Pub Crawl Length</label>
 					  </div>
 					</li>
 					  <!--price end -->
@@ -138,10 +142,10 @@
 				<!--price end -->
 
 				<!-- slider start -->
-				<h3>mileage</h3>
+				<h3>Search Radius (mi)</h3>
 				<form action="#">
 					<p class="range-field">
-					  <input type="range" id="test5" min="0" max="6" value="1" step="1" />
+					  <input type="range" id="test5" min="1" max="6" value="1" step="1" />
 					</p>
 				  </form>
 				<!-- slider end -->

@@ -30,7 +30,7 @@ p {
   font-family: "Pacifico", cursive;
   font-size: 40px;
   text-align: center;
-  color: orange !important
+  color: orange !important;
 }
 
 ul {
@@ -50,7 +50,6 @@ ul {
   height: auto;
   /* height: 100%; */
   width: 100%;
-
 }
 
 /* Page End */
@@ -65,7 +64,9 @@ a#filter.btn-floating {
 /* Filter Button end */
 
 /* Text Bar Start */
-
+.select-wrapper + label {
+  top: -35px;
+}
 label.active {
   color: orange !important;
 }
@@ -78,7 +79,7 @@ input:focus {
 textarea:focus,
 input:focus {
   font-family: "Pacifico", cursive;
-  color: white;
+  color: orange;
 }
 
 input,
@@ -89,10 +90,12 @@ textarea {
 }
 
 h3 {
-  font-family: 'Pacifico', cursive;
+  font-family: "Pacifico", cursive;
   text-align: left;
   font-size: 15px;
   color: gray;
+  left: 0.75em;
+  position: relative;
 }
 
 /* Text Bar End */
@@ -115,6 +118,19 @@ h3 {
   left: 12.5%;
   width: 75%;
   height: 75%;
+}
+.select-dropdown {
+  color: orange;
+  text-align: center;
+  font-family: "Pacifico", cursive;
+  /* padding: 4px; */
+}
+
+.range-field {
+  position: relative;
+  top: 0.5em;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
 }
 
 /* Map End */

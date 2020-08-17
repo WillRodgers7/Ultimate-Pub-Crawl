@@ -389,18 +389,20 @@ $("#textarea2").val(localStorage.getItem("currentCity"));
 $(document).ready(function () {
   console.log(1, 2, 3, 4);
   $(document).ready(function () {
+    // initialize our forms
     $("select").formSelect();
+    // $("#crawlLength").formSelect();
+
     $("#generateBtn").on("click", function (event) {
-      // event.stopPropagation();
       event.preventDefault();
       console.log("hey yaaaaaaaaaaaa");
-
-      console.log("hey yaaaaaaaaaaaa");
-
-      // var alcSelect = instanceSelect.get
-      var instance = M.FormSelect.getInstance($("select"));
+      var instance = M.FormSelect.getInstance($("#alcoholType"));
       var alcSelect = instance.getSelectedValues();
       console.log(alcSelect);
+      // var instance2 = M.FormSelect.getInstance($("#crawlLength"));
+      // var lengthSelect = instance2.getSelectedValues();
+
+      console.log($("#crawlLength").val());
     });
 
     console.log(location.href + " askldmfklahsdf");
