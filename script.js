@@ -348,6 +348,16 @@ var collapsibleInstance = M.Collapsible.init(collapsibleElem, {});
 $("#textarea2").val(localStorage.getItem("currentCity"));
 // getCityId($("#textarea2").val());
 
+
+// Save user imput on side nav
+// $("#input-field").val(localStorage.setItem(""));
+// console.log("input-field")
+$( "#myselect" ).val();
+$( "#myselect option:selected" ).text();
+
+
+
+
 //Side bar nav end
 
 // nav bar drop downs start
