@@ -1,10 +1,10 @@
 // displays info received from Zomato API
 var displayResults = $(".results");
 // global vars
-var barHopNumber = 3; //start with 3 bars minimum
+var barHopNumber = 4; //start with 3 bars minimum
 // will need an offset number for number of bars wanted after filter/updated user parameters
 // 0 for 3 spots, 1 for 4 spots, 2 for 5 spots
-var offsetNumBars = 0;
+var offsetNumBars = 1; // it'll be reassigned once you update filter parameters
 
 // will variable to hold city from index to pass into home.html
 var city;
@@ -14,6 +14,11 @@ var searchQ = "bar"; // initialize to bar
 var searchRadius = 3000; // initialize call to 5000m or 5 km
 var mainCityLat; // grabbed lat and long from first api call
 var mainCityLong;
+var midpoint; // holds calculated midpoint
+var totalDistanceInKm; // holds total distance of generated route; used for custom zoom.
+var mapAPIKey = "85e9d3f13d3845e0a0ca48b327bba8c4";
+var mode = "walk";
+var routingURL; // global var holding the dynamic ROUTING API CALL
 
 //  https://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
 // calculates distance from two points
@@ -31,7 +36,6 @@ function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
   var d = R * c; // Distance in km
   return d;
 }
-
 function deg2rad(deg) {
   return deg * (Math.PI / 180);
 }
@@ -42,7 +46,6 @@ function midpointCalculator(long1, lat1, long2, lat2) {
   var dLon = long2 - long1;
   dLon = dLon * (Math.PI / 180);
   // dLon is now in radians
-
   lat1 = lat1 * (Math.PI / 180);
   lat2 = lat2 * (Math.PI / 180);
   long1 = long1 * (Math.PI / 180);
@@ -85,6 +88,78 @@ function getRandomRestaurants(resArray) {
 
   console.log("right before return randomized array---> " + randomizedArray);
   return randomizedArray;
+}
+
+function howManyBars(randomizedArray) {
+  if (barHopNumber == 3) {
+    var long1 = randomizedArray[0].restaurant.location.longitude;
+    var lat1 = randomizedArray[0].restaurant.location.latitude;
+
+    // middle bars
+    var middleLong1 = randomizedArray[1].restaurant.location.longitude;
+    var middleLat1 = randomizedArray[1].restaurant.location.latitude;
+
+    var long2 = randomizedArray[2].restaurant.location.longitude;
+    var lat2 = randomizedArray[2].restaurant.location.latitude;
+    // adding another point; 3 points minimum
+
+    // midpoint will be an array; [lat, long]
+    midpoint = midpointCalculator(long1, lat1, long2, lat2);
+    console.log("outside of the midpoint call function ===== " + midpoint);
+    // calculate distance from the endpoints
+    totalDistanceInKm = getDistanceFromLatLonInKm(
+      lat1,
+      long1,
+      middleLat1,
+      middleLong1
+    );
+    totalDistanceInKm =
+      totalDistanceInKm +
+      getDistanceFromLatLonInKm(middleLat1, middleLong1, lat2, long2);
+    // add more calls to calculate distance, but build it like: 1st to 2nd point, 2nd to 3rd point total distance.
+    console.log("distance in km: " + totalDistanceInKm);
+    routingURL = `https://api.geoapify.com/v1/routing?waypoints=${lat1},${long1}|${middleLat1},${middleLong1}|${lat2},${long2}&mode=${mode}&apiKey=${mapAPIKey}`;
+  } else if (barHopNumber == 4) {
+    // first bar
+    var long1 = randomizedArray[0].restaurant.location.longitude;
+    var lat1 = randomizedArray[0].restaurant.location.latitude;
+
+    // middle bars
+    var middleLong1 = randomizedArray[1].restaurant.location.longitude;
+    var middleLat1 = randomizedArray[1].restaurant.location.latitude;
+    var middleLong2 = randomizedArray[2].restaurant.location.longitude;
+    var middleLat2 = randomizedArray[2].restaurant.location.latitude;
+
+    // last bar
+    var long2 = randomizedArray[2].restaurant.location.longitude;
+    var lat2 = randomizedArray[2].restaurant.location.latitude;
+
+    midpoint = midpointCalculator(long1, lat1, long2, lat2);
+    console.log(
+      "outside of the midpoint call function with 4 bars ===== " + midpoint
+    );
+    totalDistanceInKm = getDistanceFromLatLonInKm(
+      lat1,
+      long1,
+      middleLat1,
+      middleLong1
+    );
+    totalDistanceInKm =
+      totalDistanceInKm +
+      getDistanceFromLatLonInKm(
+        middleLat1,
+        middleLong1,
+        middleLat2,
+        middleLong2
+      );
+    totalDistanceInKm =
+      totalDistanceInKm +
+      getDistanceFromLatLonInKm(middleLat2, middleLong2, lat2, long2);
+
+    routingURL = `https://api.geoapify.com/v1/routing?waypoints=${lat1},${long1}|${middleLat1},${middleLong1}|${middleLat2},${middleLong2}|${lat2},${long2}&mode=${mode}&apiKey=${mapAPIKey}`;
+  } else {
+    // barhopNumber == 5
+  }
 }
 
 // gets and returns the Zomato City(entity) ID by city name
@@ -166,40 +241,48 @@ function getCityId(cityName) {
             "above random func call with restaurant array--->" +
               response.restaurants
           );
-
+          // randomize the 20 results, and spit out an array carrying the desired amount of bars
           var randomResArray = getRandomRestaurants(response.restaurants);
           console.log("outside func call---> " + randomResArray);
 
-          // get long and lat of some restaurants
-          var long1 = randomResArray[0].restaurant.location.longitude;
-          var lat1 = randomResArray[0].restaurant.location.latitude;
+          // how many bars did the user pick????? we need to build our lats, longs,
+          // midpoint, distance, and API map call according to this amount.
 
-          // middle bars
-          var middleLong1 = randomResArray[1].restaurant.location.longitude;
-          var middleLat1 = randomResArray[1].restaurant.location.latitude;
+          // count how many bars there are and run distance/midpoint calculations based on that
+          // this function could also build the MAP query string
+          howManyBars(randomResArray);
+          console.log("this is after the howManyBars() call");
 
-          var long2 = randomResArray[2].restaurant.location.longitude;
-          var lat2 = randomResArray[2].restaurant.location.latitude;
-          // adding another point; 3 points minimum
+          // // get long and lat of some restaurants
+          // var long1 = randomResArray[0].restaurant.location.longitude;
+          // var lat1 = randomResArray[0].restaurant.location.latitude;
 
-          // this will be an array
-          var midpoint = midpointCalculator(long1, lat1, long2, lat2);
-          console.log(
-            "outside of the midpoint call function ===== " + midpoint
-          );
+          // // middle bars
+          // var middleLong1 = randomResArray[1].restaurant.location.longitude;
+          // var middleLat1 = randomResArray[1].restaurant.location.latitude;
 
-          // calculate distance from the endpoints
-          var totalDistanceInKm = getDistanceFromLatLonInKm(
-            lat1,
-            long1,
-            middleLat1,
-            middleLong1
-          );
-          totalDistanceInKm =
-            totalDistanceInKm +
-            getDistanceFromLatLonInKm(middleLat1, middleLong1, lat2, long2);
-          // add more calls to calculate distance, but build it like: 1st to 2nd point, 2nd to 3rd point total distance.
-          console.log("distance in km: " + totalDistanceInKm);
+          // var long2 = randomResArray[2].restaurant.location.longitude;
+          // var lat2 = randomResArray[2].restaurant.location.latitude;
+          // // adding another point; 3 points minimum
+
+          // // this will be an array
+          // midpoint = midpointCalculator(long1, lat1, long2, lat2);
+          // console.log(
+          //   "outside of the midpoint call function ===== " + midpoint
+          // );
+
+          // // calculate distance from the endpoints
+          // totalDistanceInKm = getDistanceFromLatLonInKm(
+          //   lat1,
+          //   long1,
+          //   middleLat1,
+          //   middleLong1
+          // );
+          // totalDistanceInKm =
+          //   totalDistanceInKm +
+          //   getDistanceFromLatLonInKm(middleLat1, middleLong1, lat2, long2);
+          // // add more calls to calculate distance, but build it like: 1st to 2nd point, 2nd to 3rd point total distance.
+          // console.log("distance in km: " + totalDistanceInKm);
           var customZoom;
           // change zoom according to how far away the endpoints are from each other
           if (totalDistanceInKm < 1.5) {
@@ -217,12 +300,12 @@ function getCityId(cityName) {
           }
           console.log("conditional zoom: " + customZoom);
 
-          console.log("longitude: " + long1 + ", latitude: " + lat1);
-          console.log("longitude: " + long2 + ", latitude: " + lat2);
+          // console.log("longitude: " + long1 + ", latitude: " + lat1);
+          // console.log("longitude: " + long2 + ", latitude: " + lat2);
           // able to get long at lat from the api call
           // MAP API STUFF GOES HERE, another AJAX call
           // -----------------------------------------------------------------
-          var mapAPIKey = "85e9d3f13d3845e0a0ca48b327bba8c4";
+          // var mapAPIKey = "85e9d3f13d3845e0a0ca48b327bba8c4";
 
           // change the center to be one of the locations
           var map = new mapboxgl.Map({
@@ -238,7 +321,7 @@ function getCityId(cityName) {
 
             // will need conditionals based on how many bars to hop
             // this has three
-            var routingURL = `https://api.geoapify.com/v1/routing?waypoints=${lat1},${long1}|${middleLat1},${middleLong1}|${lat2},${long2}&mode=${mode}&apiKey=${mapAPIKey}`;
+            // var routingURL = `https://api.geoapify.com/v1/routing?waypoints=${lat1},${long1}|${middleLat1},${middleLong1}|${lat2},${long2}&mode=${mode}&apiKey=${mapAPIKey}`;
             //This commented out link is the working example for reference
             // var routingURL = "https://api.geoapify.com/v1/routing?waypoints=34.150079,-118.144247|34.153289,-118.148936&mode=drive&apiKey=85e9d3f13d3845e0a0ca48b327bba8c4"
             console.log("this is right before nested MAPS api call.....");
@@ -265,13 +348,13 @@ function getCityId(cityName) {
                   },
                 });
                 console.log(response); // Full Object
-                //Calculate distance
-                var travelDistance = response.features[0].properties.distance;
-                console.log("Travel Distance: " + travelDistance + " metres");
+                // //Calculate distance
+                // var travelDistance = response.features[0].properties.distance;
+                // console.log("Travel Distance: " + travelDistance + " metres");
 
-                //Calculate time
-                var travelMinutes = response.features[0].properties.time % 60;
-                console.log("Minutes: " + travelMinutes);
+                // //Calculate time
+                // var travelMinutes = response.features[0].properties.time % 60;
+                // console.log("Minutes: " + travelMinutes);
               },
             });
           });
