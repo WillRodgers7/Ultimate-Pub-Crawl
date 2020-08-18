@@ -63,7 +63,7 @@
 				  <!-- Filter Button Start -->
 				  <div id="filterBox">
 						<a
-							class="btn-floating right btn-large waves-effect waves-light orange sidenav-trigger"  
+							class="btn-floating right btn-large waves-effect orange sidenav-trigger"  
 							id="filter"
 							data-target="slide-out"
 							><i class="material-icons">+</i>
@@ -78,35 +78,35 @@
 
 			<!--Filter Side Nav Start -->
 
-			<ul id="slide-out" class="sidenav">
-				<div>
-					<div class="user-view" id="imgDiv">
-						<div class="background">
+		<ul id="slide-out" class="sidenav">
+			<!-- <div> -->
+				<div class="user-view" id="imgDiv">
+					<div class="background">
 							<img src="./whiskey.jpg" id="whiskeyImg">
-						</div>
+					</div>
 								<!-- <a href="#user"><img class="circle" src=""></a>
 								<a href="#name"><span class="white-text name">John Doe</span></a>
 								<a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a> -->
-								<br>
-				<br>
-				<br>
-				<br>
-				<br>
-				<br>
-				<br>
-				<br>
+						<br>
+						<br>
+						<br>
+						<br>
+						<br>
+						<br>
+						<br>
+						<br>
 					</div>
-				</div>
+				<!-- </div> -->
 				<!-- <a href="#user"><img class="circle" src=""></a> -->
 				<!-- <a href="#name"><span class="white-text name">John Doe</span></a>
 				<a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a> -->
 				
-				</div></li>
+				<!-- </div></li> -->
 
 				<!--types start -->
 
 				<li>
-				<div class="input-field col s12">
+					<div class="input-field col s12">
 					<select multiple id="alcoholType">
 					  <option value="" disabled>Choose Your Options</option>
 					  <option value="pub" >Pubs</option>
@@ -147,7 +147,7 @@
 
 				<!-- save start -->
 
-				<a href="#" class="waves-effect waves-light btn-large" id="generateBtn">Generate</a>
+				<a href="#" class="waves-effect btn-large" id="generateBtn">Generate</a>
 
 				<!-- save end -->
 				
@@ -156,51 +156,51 @@
 		
 			<!--Filter Side Nav End -->
 
-			<br />
-			<br />
+			<!-- <br /> -->
+			<!-- <br /> -->
 			<!-- Map Start -->
 
 			<!-- going to add a basic containers for the map -->
 			<!-- need to change the css to solve this -->
 			<!-- MAP GOES HERE -->
-			<div class="container" id="mapContainer">
+			<!-- <div class="container" id="mapContainer">
 				<div id="my-map"></div>
-			</div>
+			</div> -->
 
 			<!-- Map End -->
 
-			<br />
-			<br />
-
-			<!-- 1. card start -->
-			<div class="row">
-				<div class="col s12 m5">
-					<div class="card blue-grey darken-1">
-						<div class="card-content white-text">
-							<span class="card-title">Pub Name</span>
-							<ul class="results">
-								<li class="resultsAddress">Address:</li>
-								<li class="resultsNumbers">Phone Number:</li>
-								<li class="resultsPrice">Price Range:</li>
-								<li class="resultsDescription">Discription:</li>
-							</ul>
+			<!-- <br /> -->
+			<!-- <br /> -->
+			<div class="row valign-wrapper">
+				<div class="col s12 m6">
+					<div class="row" id="row1">
+						<div class="col s12 m12">
+							<div class="card blue-grey darken-1">
+								<div class="card-content white-text">
+									<span class="card-title" id="title1">Pub Name</span>
+									<ul>
+										<li class="resultsAddress" id="address1">Address:</li>
+										<li class="resultsNumber" id="phone1">Phone Number:</li>
+										<li class="resultsPrice" id="price1">Price Range:</li>
+										<li class="resultsDescription" id="desc1">Description:</li>
+									</ul>
+								</div>
+							</div>
 						</div>
 					</div>
-				</div>
-			</div>
 			<!-- 1. card end -->
 
 			<!-- 2. card start -->
-			<div class="row">
-				<div class="col s12 m5">
+				<div class="row" id="row2">
+				<div class="col s12 m12">
 					<div class="card blue-grey darken-1">
 						<div class="card-content white-text">
-							<span class="card-title">Pub Name</span>
+							<span class="card-title" id="title2">Pub Name</span>
 							<ul>
-								<li class="resultsAddress">Address:</li>
-								<li class="resultsNumber">Phone Number:</li>
-								<li class="resultsPrice">Price Range:</li>
-								<li class="resultsDescription">Discription:</li>
+								<li class="resultsAddress" id="address2">Address:</li>
+								<li class="resultsNumber" id="phone2">Phone Number:</li>
+								<li class="resultsPrice" id="price2">Price Range:</li>
+								<li class="resultsDescription" id="desc2">Description:</li>
 							</ul>
 						</div>
 					</div>
@@ -209,16 +209,16 @@
 			<!-- 2. card end -->
 
 			<!-- 3. card start -->
-			<div class="row">
-				<div class="col s12 m5">
+			<div class="row" id="row3">
+				<div class="col s12 m12">
 					<div class="card blue-grey darken-1">
 						<div class="card-content white-text">
-							<span class="card-title">Pub Name</span>
+							<span class="card-title" id="title3">Pub Name</span>
 							<ul class="results">
-								<li class="resultsAddress">Address:</li>
-								<li class="resultsNumber">Phone Number:</li>
-								<li class="resultsPrice">Price Range:</li>
-								<li class="resultsDescription">Discription:</li>
+								<li class="resultsAddress" id="address3">Address:</li>
+								<li class="resultsNumber" id="phone3">Phone Number:</li>
+								<li class="resultsPrice" id="price3">Price Range:</li>
+								<li class="resultsDescription" id="desc3">Description:</li>
 							</ul>
 						</div>
 					</div>
@@ -226,38 +226,132 @@
 			</div>
 			<!-- 3. card end -->
 			<!-- 4th card -->
-			<div class="row">
-				<div class="col s12 m5">
+			<div class="row" id="row4">
+				<div class="col s12 m12">
 					<div class="card blue-grey darken-1">
 						<div class="card-content white-text">
-							<span class="card-title">Pub Name</span>
+							<span class="card-title" id="title4">Pub Name</span>
 							<ul class="results">
-								<li class="resultsAddress">Address:</li>
-								<li class="resultsNumber">Phone Number:</li>
-								<li class="resultsPrice">Price Range:</li>
-								<li class="resultsDescription">Discription:</li>
+								<li class="resultsAddress" id="address4">Address:</li>
+								<li class="resultsNumber" id="phone4">Phone Number:</li>
+								<li class="resultsPrice" id="price4">Price Range:</li>
+								<li class="resultsDescription" id="desc4">Discription:</li>
 							</ul>
 						</div>
 					</div>
 				</div>
 			</div>
 			<!-- 5th card -->
-			<div class="row">
-				<div class="col s12 m5">
+			<div class="row" id="row5">
+				<div class="col s12 m12">
 					<div class="card blue-grey darken-1">
 						<div class="card-content white-text">
-							<span class="card-title">Pub Name</span>
+							<span class="card-title" id="title5">Pub Name</span>
 							<ul class="results">
-								<li class="resultsAddress">Address:</li>
-								<li class="resultsNumber">Phone Number:</li>
-								<li class="resultsPrice">Price Range:</li>
-								<li class="resultsDescription">Discription:</li>
+								<li class="resultsAddress" id="address5">Address:</li>
+								<li class="resultsNumber" id="phone5">Phone Number:</li>
+								<li class="resultsPrice" id="price5">Price Range:</li>
+								<li class="resultsDescription" id="desc5">Discription:</li>
 							</ul>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+		<div class="col s12 m6">
+			<!-- <div class="valign-wrapper"> -->
+			<div class="container" id="mapContainer">
+				<div id="my-map"></div>
+			</div>
+			<!-- </div> -->
+		</div>
+	</div>
+			<!-- 1. card start -->
+			<!-- <div class="row" id="row1">
+				<div class="col s12 m5">
+					<div class="card blue-grey darken-1">
+						<div class="card-content white-text">
+							<span class="card-title" id="title1">Pub Name</span>
+							<ul>
+								<li class="resultsAddress" id="address1">Address:</li>
+								<li class="resultsNumber" id="phone1">Phone Number:</li>
+								<li class="resultsPrice" id="price1">Price Range:</li>
+								<li class="resultsDescription" id="desc1">Description:</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- 1. card end -->
+
+			<!-- 2. card start -->
+			<!-- <div class="row" id="row2">
+				<div class="col s12 m5">
+					<div class="card blue-grey darken-1">
+						<div class="card-content white-text">
+							<span class="card-title" id="title2">Pub Name</span>
+							<ul>
+								<li class="resultsAddress" id="address2">Address:</li>
+								<li class="resultsNumber" id="phone2">Phone Number:</li>
+								<li class="resultsPrice" id="price2">Price Range:</li>
+								<li class="resultsDescription" id="desc2">Description:</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div> -->
+			<!-- 2. card end -->
+
+			<!-- 3. card start -->
+			<!-- <div class="row" id="row3">
+				<div class="col s12 m5">
+					<div class="card blue-grey darken-1">
+						<div class="card-content white-text">
+							<span class="card-title" id="title3">Pub Name</span>
+							<ul class="results">
+								<li class="resultsAddress" id="address3">Address:</li>
+								<li class="resultsNumber" id="phone3">Phone Number:</li>
+								<li class="resultsPrice" id="price3">Price Range:</li>
+								<li class="resultsDescription" id="desc3">Description:</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div> -->
+			<!-- 3. card end -->
+			<!-- 4th card -->
+			<!-- <div class="row" id="row4">
+				<div class="col s12 m5">
+					<div class="card blue-grey darken-1">
+						<div class="card-content white-text">
+							<span class="card-title" id="title4">Pub Name</span>
+							<ul class="results">
+								<li class="resultsAddress" id="address4">Address:</li>
+								<li class="resultsNumber" id="phone4">Phone Number:</li>
+								<li class="resultsPrice" id="price4">Price Range:</li>
+								<li class="resultsDescription" id="desc4">Discription:</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div> -->
+			<!-- 5th card -->
+			<!-- <div class="row" id="row5">
+				<div class="col s12 m5">
+					<div class="card blue-grey darken-1">
+						<div class="card-content white-text">
+							<span class="card-title" id="title5">Pub Name</span>
+							<ul class="results">
+								<li class="resultsAddress" id="address5">Address:</li>
+								<li class="resultsNumber" id="phone5">Phone Number:</li>
+								<li class="resultsPrice" id="price5">Price Range:</li>
+								<li class="resultsDescription" id="desc5">Discription:</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div> -->
+		<!-- </div> -->
 
 		<script
 			src="https://code.jquery.com/jquery-3.5.1.min.js"
