@@ -20,9 +20,9 @@ function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
   var a =
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
     Math.cos(deg2rad(lat1)) *
-      Math.cos(deg2rad(lat2)) *
-      Math.sin(dLon / 2) *
-      Math.sin(dLon / 2);
+    Math.cos(deg2rad(lat2)) *
+    Math.sin(dLon / 2) *
+    Math.sin(dLon / 2);
   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   var d = R * c; // Distance in km
   return d;
@@ -107,7 +107,7 @@ function getCityId(cityName) {
       // this console.log can display the city ID
       console.log(
         "This should give me the city ID ===> " +
-          response.location_suggestions[0].entity_id
+        response.location_suggestions[0].entity_id
       );
       var cityID = response.location_suggestions[0].entity_id;
       mainCityLat = response.location_suggestions[0].latitude;
@@ -154,7 +154,7 @@ function getCityId(cityName) {
           }
           console.log(
             "above random func call with restaurant array--->" +
-              response.restaurants
+            response.restaurants
           );
 
           var randomResArray = getRandomRestaurants(response.restaurants);
@@ -350,12 +350,16 @@ $("#textarea2").val(localStorage.getItem("currentCity"));
 
 
 // Save user imput on side nav
-// $("#input-field").val(localStorage.setItem(""));
-// console.log("input-field")
-$( "#myselect" ).val();
-$( "#myselect option:selected" ).text();
 
 
+$(function () {
+  $('#myselect').click(function () {
+    var val = [];
+    $(':value:checked').each(function (i) {
+      val[i] = $(this).val();
+    });
+  });
+})
 
 
 //Side bar nav end
