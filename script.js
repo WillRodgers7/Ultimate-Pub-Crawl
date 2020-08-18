@@ -65,7 +65,6 @@ function midpointCalculator(long1, lat1, long2, lat2) {
   long3 = long3 * (180 / Math.PI);
 
   console.log("new longitude: " + long3 + ", new latitude: " + lat3);
-  // returns coords as an array
   return [long3, lat3];
 }
 
@@ -271,9 +270,15 @@ function getCityId(cityName) {
 
             console.log("name of this restaurant in for loop: " + name);
 
+            // Populates cards with restaurant information
             $(".card-title").text(name);
-            var addLi = $("<li>").text("Address: " + address);
-            $(".list").append(addLi);
+            $(".resultsAddress").text(address);
+            $(".resultsPrice").text(cost);
+            $(".resultsDescription").text(hours);
+
+            // var addLi = $("<li>").text("Address: " + address);
+            // $(".list").append(addLi);
+            
           }
 
           // count how many bars there are and run distance/midpoint calculations based on that
