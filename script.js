@@ -129,8 +129,8 @@ function howManyBars(randomizedArray) {
     var middleLat2 = randomizedArray[2].restaurant.location.latitude;
 
     // last bar
-    var long2 = randomizedArray[2].restaurant.location.longitude;
-    var lat2 = randomizedArray[2].restaurant.location.latitude;
+    var long2 = randomizedArray[3].restaurant.location.longitude;
+    var lat2 = randomizedArray[3].restaurant.location.latitude;
 
     midpoint = midpointCalculator(long1, lat1, long2, lat2);
     console.log(
@@ -332,7 +332,7 @@ function getCityId(cityName) {
             style: `https://maps.geoapify.com/v1/styles/osm-bright/style.json?apiKey=${mapAPIKey}`,
           });
           map.addControl(new mapboxgl.NavigationControl());
-
+          console.log(routingURL);
           map.on("load", function () {
             console.log("this is right before nested MAPS api call.....");
             $.ajax({
