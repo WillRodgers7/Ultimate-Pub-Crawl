@@ -257,28 +257,47 @@ function getCityId(cityName) {
         success: function (response) {
           // randomize the 20 results, and spit out an array carrying the desired amount of bars
           var randomResArray = getRandomRestaurants(response.restaurants);
-
+          var iPlus;
+          if (barHopNumber == 3) {
+            $("#row4").hide();
+            $("#row5").hide();
+          } else if (barHopNumber == 4) {
+            $("#row5").hide();
+            $("#row4").show();
+          } else {
+            $("#row4").show();
+            $("#row5").show();
+          }
           for (var i = 0; i < randomResArray.length; i++) {
             // changed from const to var; renames to thisRestaurant
             var thisRestaurant = randomResArray[i].restaurant;
-            var establishment = thisRestaurant.establishment[0];
+            // var establishment = thisRestaurant.establishment[0];
             var name = thisRestaurant.name;
-            var reviews = thisRestaurant.user_rating.aggregate_rating;
+            // var reviews = thisRestaurant.user_rating.aggregate_rating;
             var cost = thisRestaurant.average_cost_for_two;
-            var hours = thisRestaurant.timings;
+            var description = thisRestaurant.highlights;
             var address = thisRestaurant.location.address;
+            var phone = thisRestaurant.phone_numbers;
 
             console.log("name of this restaurant in for loop: " + name);
-
+            iPlus = i + 1;
+            console.log("in the for loop: " + iPlus);
             // Populates cards with restaurant information
-            $(".card-title").text(name);
-            $(".resultsAddress").text(address);
-            $(".resultsPrice").text(cost);
-            $(".resultsDescription").text(hours);
+            $("#title" + iPlus).text(name);
+            $("#address" + iPlus).text("Address: " + address);
+            $("#price" + iPlus).text("Average cost for two: $" + cost);
+            $("#phone" + iPlus).text("Phone Number: " + phone);
+            $("#desc" + iPlus).text(
+              "Highlights: " +
+                description[0] +
+                ", " +
+                description[1] +
+                ", " +
+                description[2]
+            );
 
             // var addLi = $("<li>").text("Address: " + address);
             // $(".list").append(addLi);
-            
           }
 
           // count how many bars there are and run distance/midpoint calculations based on that
