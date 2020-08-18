@@ -30,7 +30,7 @@ p {
   font-family: "Pacifico", cursive;
   font-size: 40px;
   text-align: center;
-  color: orange !important
+  color: orange !important;
 }
 
 ul {
@@ -46,11 +46,11 @@ ul {
 }
 
 #whiskeyImg {
-  max-width: 100%;
-  height: auto;
-  /* height: 100%; */
+  /* max-width: 100%; */
+  /* height: auto; */
+  height: 100%;
+  width: 100%;
   /* width: 100%; */
-
 }
 
 /* #imgDiv {
@@ -61,14 +61,11 @@ ul {
 #imgDiv {
   width: 300px;
   height: 300px;
-
 }
 
 .sidenav {
-  background-color: #546E7A !important;
-
+  background-color: #546e7a !important;
 }
-
 
 /* Page End */
 
@@ -82,7 +79,9 @@ a#filter.btn-floating {
 /* Filter Button end */
 
 /* Text Bar Start */
-
+.select-wrapper + label {
+  top: -35px;
+}
 label.active {
   color: orange !important;
 }
@@ -109,9 +108,12 @@ textarea {
 }
 
 h3 {
-  font-family: 'Pacifico', cursive;
+  font-family: "Pacifico", cursive;
   text-align: left;
   font-size: 15px;
+  /* color: gray; */
+  /* left: 0.75em; */
+  /* position: relative; */
   color: orange;
   text-align: center;
   font-size: 20px !important;
@@ -137,6 +139,19 @@ h3 {
   left: 2.5%;
   width: 95%;
   height: 95%;
+}
+.select-dropdown {
+  color: orange;
+  text-align: center;
+  font-family: "Pacifico", cursive;
+  /* padding: 4px; */
+}
+
+.range-field {
+  position: relative;
+  top: 0.5em;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
 }
 
 /* Map End */

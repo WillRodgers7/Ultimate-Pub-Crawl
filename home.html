@@ -87,67 +87,69 @@
 								<!-- <a href="#user"><img class="circle" src=""></a>
 								<a href="#name"><span class="white-text name">John Doe</span></a>
 								<a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a> -->
+								<br>
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
+				<br>
 					</div>
 				</div>
+				<!-- <a href="#user"><img class="circle" src=""></a> -->
+				<!-- <a href="#name"><span class="white-text name">John Doe</span></a>
+				<a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a> -->
+				
+				</div></li>
 
 				<!--types start -->
 
 				<li>
-					<div class="input-field col s12">
-						<select multiple>
-							<option value="" disabled selected>Choose Your Option</option>
-							<option value="1">Pubs</option>
-							<option value="2">Bars</option>
-							<option value="3">Restaurant</option>
-							<option value="4">Wineries</option>
-							<option value="5">Breweries</option>
-							<option value="6">Distilleries</option>
-						</select>
-						<!-- <label>Choose your options</label> -->
-				  	</div>
+				<div class="input-field col s12">
+					<select multiple id="alcoholType">
+					  <option value="" disabled>Choose Your Options</option>
+					  <option value="pub" >Pubs</option>
+					  <option value="bar" selected>Bars</option>
+					  <option value="wine" >Wine Bars</option>
+					  <option value="brewery" >Breweries</option>
+					  <option value="beer garden" >Beer Gardens</option>
+					  <option value="cocktail" >Cocktail Bar</option>
+
+					</select>
+					<label>Types of Locations</label>
+				  </div>
 				</li>
 				  <!-- types end -->
 
 				<!-- price start -->
 				  <li>
 					<div class="input-field col s12">
-						<select multiple>
-						  <option value="" disabled selected>Choose Your Price</option>
-						  <option value="1">$</option>
-						  <option value="2">$$</option>
-						  <option value="3">$$$</option>
-						  <option value="4">$$$$</option>
-
+						<select id="crawlLength">
+						  <option value="" disabled>Choose Length of Pub Crawl</option>
+						  <option value="3">3</option>
+						  <option value="4">4</option>
+						  <option value="5">5</option>
 						</select>
-						<!-- <label>Choose your price</label> -->
+						<label>Pub Crawl Length</label>
 					  </div>
 					</li>
 					  <!--price end -->
 
-				<!-- price start -->
-				  <li>
-					<div class="input-field col s12">
-						<select multiple>
-						  <option value="" disabled selected>Choose Your Rating</option>
-						  <option value="1">*</option>
-						  <option value="2">**</option>
-						  <option value="3">***</option>
-						  <option value="4">****</option>
-
-						</select>
-						<!-- <label>Choose your rating</label> -->
-					  </div>
-					</li>
-				<!--price end -->
-
 				<!-- slider start -->
-				<h3>Milage</h3>
+				<h3>Search Radius (mi)</h3>
 				<form action="#">
 					<p class="range-field">
-					  <input type="range" id="test5" min="0" max="100" />
+					  <input type="range" id="search-radius" min="1" max="6" value="2" step="1" />
 					</p>
 				  </form>
 				<!-- slider end -->
+
+				<!-- save start -->
+
+				<a href="#" class="waves-effect waves-light btn-large" id="generateBtn">Generate</a>
+
+				<!-- save end -->
 				
 			</ul>
 			
@@ -183,10 +185,6 @@
 								Discription:
 							</ul>
 						</div>
-						<div class="card-action">
-							<a href="#">Add</a>
-							<a href="#">Delete</a>
-						</div>
 					</div>
 				</div>
 			</div>
@@ -204,10 +202,6 @@
 								Price Range:
 								Discription:
 							</ul>
-						</div>
-						<div class="card-action">
-							<a href="#">Add</a>
-							<a href="#">Delete</a>
 						</div>
 					</div>
 				</div>
@@ -227,16 +221,11 @@
 								Discription:
 							</ul>
 						</div>
-						<div class="card-action">
-							<a href="#">Add</a>
-							<a href="#">Delete</a>
-						</div>
 					</div>
 				</div>
 			</div>
 			<!-- 3. card end -->
-
-			<!-- 4. card start -->
+			<!-- 4th card -->
 			<div class="row">
 				<div class="col s12 m5">
 					<div class="card blue-grey darken-1">
@@ -249,16 +238,10 @@
 								Discription:
 							</ul>
 						</div>
-						<div class="card-action">
-							<a href="#">Add</a>
-							<a href="#">Delete</a>
-						</div>
 					</div>
 				</div>
 			</div>
-			<!-- 4. card end -->
-
-			<!-- 5. card start -->
+			<!-- 5th card -->
 			<div class="row">
 				<div class="col s12 m5">
 					<div class="card blue-grey darken-1">
@@ -271,14 +254,9 @@
 								Discription:
 							</ul>
 						</div>
-						<div class="card-action">
-							<a href="#">Add</a>
-							<a href="#">Delete</a>
-						</div>
 					</div>
 				</div>
 			</div>
-			<!-- 5. card end -->
 		</div>
 
 		<script

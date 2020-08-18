@@ -1,16 +1,16 @@
 // displays info received from Zomato API
 var displayResults = $(".results");
 // global vars
-var barHopNumber = 5; //start with 3 bars minimum
+var barHopNumber = 3; //start with 3 bars minimum
 // will need an offset number for number of bars wanted after filter/updated user parameters
 // 0 for 3 spots, 1 for 4 spots, 2 for 5 spots
-var offsetNumBars = 2; // it'll be reassigned once you update filter parameters
+var offsetNumBars = 0; // it'll be reassigned once you update filter parameters
 
 // will variable to hold city from index to pass into home.html
 var city;
 // lets do a search query instead with the keywords, bar, brewery, winery, pub..
 var searchQ = "bar"; // initialize to bar
-var searchRadius = 3000; // initialize call to 5000m or 5 km
+var searchRadius = 1500; // initialize call to 5000m or 5 km
 var mainCityLat; // grabbed lat and long from first api call
 var mainCityLong;
 var midpoint; // holds calculated midpoint
@@ -18,6 +18,9 @@ var totalDistanceInKm; // holds total distance of generated route; used for cust
 var mapAPIKey = "85e9d3f13d3845e0a0ca48b327bba8c4";
 var mode = "walk";
 var routingURL; // global var holding the dynamic ROUTING API CALL
+
+var instanceSelect;
+var alcSelect; // array of choices from filter button
 
 //  https://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
 // calculates distance from two points
@@ -99,7 +102,9 @@ function howManyBars(randomizedArray) {
 
     // midpoint will be an array; [lat, long]
     midpoint = midpointCalculator(long1, lat1, long2, lat2);
-    console.log("outside of the midpoint call function ===== " + midpoint);
+    console.log(
+      "outside of the midpoint call function with 3 bars ===== " + midpoint
+    );
     // calculate distance from the endpoints
     totalDistanceInKm = getDistanceFromLatLonInKm(
       lat1,
@@ -172,7 +177,7 @@ function howManyBars(randomizedArray) {
 
     midpoint = midpointCalculator(long1, lat1, long2, lat2);
     console.log(
-      "outside of the midpoint call function with 4 bars ===== " + midpoint
+      "outside of the midpoint call function with 5 bars ===== " + midpoint
     );
     totalDistanceInKm = getDistanceFromLatLonInKm(
       lat1,
@@ -224,6 +229,9 @@ function getCityId(cityName) {
     url: queryU,
     success: function (response) {
       console.log(response);
+      console.log("right before search API call...");
+      console.log("updated searchQ: " + searchQ);
+      console.log("updated search radius: " + searchRadius);
       mainCityLat = response.location_suggestions[0].latitude;
       mainCityLong = response.location_suggestions[0].longitude;
       // -----------------------------------------------------------------------
@@ -272,7 +280,7 @@ function getCityId(cityName) {
           // this function could also build the MAP query string
           howManyBars(randomResArray);
           console.log("this is after the howManyBars() call");
-          console.log(randomResArray)
+          console.log(randomResArray);
 
           var customZoom;
           // change zoom according to how far away the endpoints are from each other
@@ -326,63 +334,70 @@ function getCityId(cityName) {
                   },
                 });
                 // Script for loading geojson bar points!!!
-                var pointgeojson = {type: 'FeatureCollection', features: []}
-                for (var i=0; i < randomResArray.length; i++) {
+                var pointgeojson = { type: "FeatureCollection", features: [] };
+                for (var i = 0; i < randomResArray.length; i++) {
                   addPoint = {
-                      type: 'Feature',
-                      geometry: {
-                        type: 'Point',
-                        coordinates: [randomResArray[i].restaurant.location.longitude, randomResArray[i].restaurant.location.latitude]
-                      },
-                      properties: {
-                        title: randomResArray[i].restaurant.name,
-                        description: randomResArray[i].restaurant.timings
-                      }
-                    };
-                pointgeojson.features.push(addPoint)
-
+                    type: "Feature",
+                    geometry: {
+                      type: "Point",
+                      coordinates: [
+                        randomResArray[i].restaurant.location.longitude,
+                        randomResArray[i].restaurant.location.latitude,
+                      ],
+                    },
+                    properties: {
+                      title: randomResArray[i].restaurant.name,
+                      description: randomResArray[i].restaurant.timings,
+                    },
                   };
+                  pointgeojson.features.push(addPoint);
+                }
 
-                    // {
-                    //   type: 'Feature',
-                    //   geometry: {
-                    //     type: 'Point',
-                    //     coordinates: [randomResArray[1].restaurant.location.longitude, randomResArray[1].restaurant.location.latitude]
-                    //   },
-                    //   properties: {
-                    //     title: randomResArray[1].restaurant.name,
-                    //     description: randomResArray[1].restaurant.timings
-                    //   }
-                    // }]
-                  // };
+                // {
+                //   type: 'Feature',
+                //   geometry: {
+                //     type: 'Point',
+                //     coordinates: [randomResArray[1].restaurant.location.longitude, randomResArray[1].restaurant.location.latitude]
+                //   },
+                //   properties: {
+                //     title: randomResArray[1].restaurant.name,
+                //     description: randomResArray[1].restaurant.timings
+                //   }
+                // }]
+                // };
 
                 map.loadImage(
-                  'https://api.geoapify.com/v1/icon/?type=awesome&color=%23467cda&icon=glass-martini&apiKey=85e9d3f13d3845e0a0ca48b327bba8c4', function(error,image) {
+                  "https://api.geoapify.com/v1/icon/?type=awesome&color=%23467cda&icon=glass-martini&apiKey=85e9d3f13d3845e0a0ca48b327bba8c4",
+                  function (error, image) {
                     if (error) throw error;
-                    map.addImage('custom-marker', image);
-                    map.addSource('waypoints', {"type": "geojson", "data": pointgeojson});
+                    map.addImage("custom-marker", image);
+                    map.addSource("waypoints", {
+                      type: "geojson",
+                      data: pointgeojson,
+                    });
                     map.addLayer({
-                      'id': 'waypoints',
-                      'type': 'symbol',
-                      'source': 'waypoints',
-                      'layout': {
-                      'icon-image': 'custom-marker',
-                      // get the title name from the source's "title" property
-                      'text-field': ['get', 'title'],
-                      'text-font': [
-                      'Open Sans Semibold',
-                      'Arial Unicode MS Bold'
-                      ],
-                      'text-offset': [0, 1.25],
-                      'text-anchor': 'top'
-                    }
-                  });
-                })
-                console.log("Map Object:")
+                      id: "waypoints",
+                      type: "symbol",
+                      source: "waypoints",
+                      layout: {
+                        "icon-image": "custom-marker",
+                        // get the title name from the source's "title" property
+                        "text-field": ["get", "title"],
+                        "text-font": [
+                          "Open Sans Semibold",
+                          "Arial Unicode MS Bold",
+                        ],
+                        "text-offset": [0, 1.25],
+                        "text-anchor": "top",
+                      },
+                    });
+                  }
+                );
+                console.log("Map Object:");
                 console.log(result); // Full Object; map
-                console.log("Restaurants displayed")
-                console.log(randomResArray)
-                console.log("Restaurants Object: ")
+                console.log("Restaurants displayed");
+                console.log(randomResArray);
+                console.log("Restaurants Object: ");
                 console.log(response); //Full Object; should be restaurants
               },
             });
@@ -412,6 +427,15 @@ $("#userForm").on("submit", function (event) {
     if (location.href.includes("/index.html")) {
       window.location.href = "./home.html";
     } else {
+      // update number of bars
+      barHopNumber = $("#crawlLength").val();
+      if (barHopNumber == 3) {
+        offsetNumBars = 0;
+      } else if (barHopNumber == 4) {
+        offsetNumBars = 1;
+      } else {
+        offsetNumBars = 2;
+      }
       getCityId(city);
     }
   }
@@ -428,6 +452,12 @@ document.addEventListener("DOMContentLoaded", function () {
 var collapsibleElem = document.querySelector(".collapsible");
 var collapsibleInstance = M.Collapsible.init(collapsibleElem, {});
 
+// initialize form select
+// document.addEventListener("DOMContentLoaded", function () {
+//   var elems = document.querySelectorAll("select");
+//   instanceSelect = M.FormSelect.init(elems, options);
+// });
+
 // get locally stored city every time we load page
 $("#textarea2").val(localStorage.getItem("currentCity"));
 // getCityId($("#textarea2").val());
@@ -435,17 +465,60 @@ $("#textarea2").val(localStorage.getItem("currentCity"));
 //Side bar nav end
 // nav bar drop downs start
 
-
 $(document).ready(function () {
+  // initialize our forms
   $("select").formSelect();
+  // $("#crawlLength").formSelect();
+
+  $("#generateBtn").on("click", function (event) {
+    event.preventDefault();
+    console.log("hey yaaaaaaaaaaaa");
+    var instance = M.FormSelect.getInstance($("#alcoholType"));
+    // changed into a global
+    alcSelect = instance.getSelectedValues();
+    console.log(alcSelect);
+    // var instance2 = M.FormSelect.getInstance($("#crawlLength"));
+    // var lengthSelect = instance2.getSelectedValues();
+
+    console.log($("#crawlLength").val());
+
+    searchQ = "";
+    for (var i = 0; i < alcSelect.length; i++) {
+      searchQ = searchQ + alcSelect[i] + " ";
+    }
+    console.log("searchQ = " + searchQ);
+    barHopNumber = $("#crawlLength").val();
+    if (barHopNumber == 3) {
+      offsetNumBars = 0;
+    } else if (barHopNumber == 4) {
+      offsetNumBars = 1;
+    } else {
+      offsetNumBars = 2;
+    }
+
+    console.log(
+      "barHopNumber = " + barHopNumber + " and offset = " + offsetNumBars
+    );
+
+    searchRadius = $("#search-radius").val();
+
+    // convert to meters
+    searchRadius = searchRadius * 1.609 * 1000;
+    console.log("search radius from slider = " + searchRadius);
+    console.log($("#textarea2").val());
+    getCityId($("#textarea2").val());
+  });
+
+  console.log(location.href + " askldmfklahsdf");
   // var stringURL = (location.href).toString
   // $(".sidenav").sidenav();
   if (location.href.includes("/home.html")) {
+    console.log("OMMMMGGGGGGGGGGGGGGGGG");
     // var cityGrab = document.getElementById("currentCity");
     // cityGrab.textContent = `Your Current City Is: ${city}`;
     var ourCity = $("#textarea2").val();
     // execute call on the home page
-    console.log("From Ready Document: " + ourCity);
+    console.log(ourCity);
     getCityId(ourCity);
   } else {
     return;
@@ -471,3 +544,16 @@ noUiSlider.create(slider, {
 });
 
 // nav bar slider end
+
+// generate button
+// $("#generateBtn").on("click", function (event) {
+//   event.stopPropagation();
+//   console.log("hey yaaaaaaaaaaaa");
+//   event.preventDefault();
+//   console.log("hey yaaaaaaaaaaaa");
+
+//   // var alcSelect = instanceSelect.get
+//   var instance = M.FormSelect.getInstance($("select"));
+//   var alcSelect = instance.getSelectedValues();
+//   console.log("this is the alc selections: " + alcSelect);
+// });
