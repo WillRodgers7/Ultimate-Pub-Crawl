@@ -1,16 +1,16 @@
 // displays info received from Zomato API
 var displayResults = $(".results");
 // global vars
-var barHopNumber = 5; //start with 3 bars minimum
+var barHopNumber = 3; //start with 3 bars minimum
 // will need an offset number for number of bars wanted after filter/updated user parameters
 // 0 for 3 spots, 1 for 4 spots, 2 for 5 spots
-var offsetNumBars = 2; // it'll be reassigned once you update filter parameters
+var offsetNumBars = 0; // it'll be reassigned once you update filter parameters
 
 // will variable to hold city from index to pass into home.html
 var city;
 // lets do a search query instead with the keywords, bar, brewery, winery, pub..
 var searchQ = "bar"; // initialize to bar
-var searchRadius = 3000; // initialize call to 5000m or 5 km
+var searchRadius = 1500; // initialize call to 5000m or 5 km
 var mainCityLat; // grabbed lat and long from first api call
 var mainCityLong;
 var midpoint; // holds calculated midpoint
