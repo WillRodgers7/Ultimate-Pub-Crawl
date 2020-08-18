@@ -124,14 +124,19 @@ h3 {
 /* Map Start */
 
 #mapContainer {
-  position: absolute;
-  top: 75%;
-  left: 45%;
-  width: 700px;
-  height: 700px;
+  position: relative;
+  /* top: 25%;
+  left: 10%; */
+  width: 100%;
+  /* width: 400px; */
+  height: 500px;
   background-color: orange;
   margin-bottom: 2rem;
 }
+
+/* #mapColumn {
+  clear: right;
+} */
 
 #my-map {
   position: relative;
@@ -154,6 +159,16 @@ h3 {
   margin-right: 0.5em;
 }
 
+/* .m12 {
+  float: none !important;
+  margin-left: auto;
+  margin-right: auto;
+} */
+
+/* .row {
+  overflow-wrap: wrap;
+} */
+
 /* Map End */
 
 /* Text Bar Color Shenanigans */
@@ -164,3 +179,23 @@ input:-webkit-autofill:active {
     transition: background-color 5000s ease-in-out 0s;
     -webkit-text-fill-color: white !important;
 } */
+/* @media only screen and (max-width: 992px) {
+  #mapContainer { */
+    /* position: absolute;  */
+    /* top: 75%;
+    left: 45%; */
+    /* float: right;
+    width: 80%;
+    height: 400px;
+    background-color: orange;
+    margin-bottom: 2rem;
+  }
+
+  #my-map {
+    position: relative;
+    top: 2.5%;
+    left: 2.5%;
+    width: 95%;
+    height: 95%;
+  }
+}
