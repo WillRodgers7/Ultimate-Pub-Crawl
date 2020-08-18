@@ -54,8 +54,18 @@ ul {
 }
 
 /* #imgDiv {
-  /* padding: 120px 120px 120px 120px 120px; */
+  padding: 120px 120px 120px 120px 120px;
+
 } */
+
+#imgDiv {
+  width: 300px;
+  height: 300px;
+}
+
+.sidenav {
+  background-color: #546e7a !important;
+}
 
 /* Page End */
 
@@ -84,23 +94,29 @@ input:focus {
 textarea:focus,
 input:focus {
   font-family: "Pacifico", cursive;
-  color: orange;
+  color: white;
+  font-size: 25px !important;
 }
 
 input,
 select,
 textarea {
   font-family: "Pacifico", cursive;
-  color: white;
+  color: orange;
+  text-align: center;
+  font-size: 20px !important;
 }
 
 h3 {
   font-family: "Pacifico", cursive;
   text-align: left;
   font-size: 15px;
-  color: gray;
-  left: 0.75em;
-  position: relative;
+  /* color: gray; */
+  /* left: 0.75em; */
+  /* position: relative; */
+  color: orange;
+  text-align: center;
+  font-size: 20px !important;
 }
 
 /* Text Bar End */
