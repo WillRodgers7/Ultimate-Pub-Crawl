@@ -274,6 +274,7 @@ function getCityId(cityName) {
           // this function could also build the MAP query string
           howManyBars(randomResArray);
           console.log("this is after the howManyBars() call");
+          console.log(randomResArray);
 
           var customZoom;
           // change zoom according to how far away the endpoints are from each other
@@ -308,10 +309,10 @@ function getCityId(cityName) {
               method: "GET",
               url: routingURL,
 
-              success: function (response) {
+              success: function (result) {
                 map.addSource("route", {
                   type: "geojson",
-                  data: response,
+                  data: result,
                 });
                 map.addLayer({
                   id: "route",
@@ -322,11 +323,76 @@ function getCityId(cityName) {
                     "line-cap": "round",
                   },
                   paint: {
-                    "line-color": "#888",
-                    "line-width": 8,
+                    "line-color": "#4DDBFF",
+                    "line-width": 7,
                   },
                 });
-                console.log(response); // Full Object; map object
+                // Script for loading geojson bar points!!!
+                var pointgeojson = { type: "FeatureCollection", features: [] };
+                for (var i = 0; i < randomResArray.length; i++) {
+                  addPoint = {
+                    type: "Feature",
+                    geometry: {
+                      type: "Point",
+                      coordinates: [
+                        randomResArray[i].restaurant.location.longitude,
+                        randomResArray[i].restaurant.location.latitude,
+                      ],
+                    },
+                    properties: {
+                      title: randomResArray[i].restaurant.name,
+                      description: randomResArray[i].restaurant.timings,
+                    },
+                  };
+                  pointgeojson.features.push(addPoint);
+                }
+
+                // {
+                //   type: 'Feature',
+                //   geometry: {
+                //     type: 'Point',
+                //     coordinates: [randomResArray[1].restaurant.location.longitude, randomResArray[1].restaurant.location.latitude]
+                //   },
+                //   properties: {
+                //     title: randomResArray[1].restaurant.name,
+                //     description: randomResArray[1].restaurant.timings
+                //   }
+                // }]
+                // };
+
+                map.loadImage(
+                  "https://api.geoapify.com/v1/icon/?type=awesome&color=%23467cda&icon=glass-martini&apiKey=85e9d3f13d3845e0a0ca48b327bba8c4",
+                  function (error, image) {
+                    if (error) throw error;
+                    map.addImage("custom-marker", image);
+                    map.addSource("waypoints", {
+                      type: "geojson",
+                      data: pointgeojson,
+                    });
+                    map.addLayer({
+                      id: "waypoints",
+                      type: "symbol",
+                      source: "waypoints",
+                      layout: {
+                        "icon-image": "custom-marker",
+                        // get the title name from the source's "title" property
+                        "text-field": ["get", "title"],
+                        "text-font": [
+                          "Open Sans Semibold",
+                          "Arial Unicode MS Bold",
+                        ],
+                        "text-offset": [0, 1.25],
+                        "text-anchor": "top",
+                      },
+                    });
+                  }
+                );
+                console.log("Map Object:");
+                console.log(result); // Full Object; map
+                console.log("Restaurants displayed");
+                console.log(randomResArray);
+                console.log("Restaurants Object: ");
+                console.log(response); //Full Object; should be restaurants
               },
             });
           });
@@ -339,19 +405,17 @@ function getCityId(cityName) {
 // prelim submit function
 $("#userForm").on("submit", function (event) {
   event.preventDefault();
-  console.log("submitted");
   if (location.href.includes("/index.html")) {
     city = $("#textarea1").val().trim();
   } else if (location.href.includes("/home.html")) {
     city = $("#textarea2").val().trim();
   }
   localStorage.setItem("currentCity", city);
-  console.log(city);
+  console.log("Submitted city: " + city);
   if (city == "") {
     return;
   } else {
     // Connecting Index and Home Page (Begining)
-    console.log("YOOOOOOOO");
     // when we submit, if we are in index...then go to home page.
     // but if we are in home.html (else), then run the getcityID script! prevents page from reloading completely
     if (location.href.includes("/index.html")) {
@@ -387,39 +451,36 @@ $("#textarea2").val(localStorage.getItem("currentCity"));
 // nav bar drop downs start
 
 $(document).ready(function () {
-  console.log(1, 2, 3, 4);
-  $(document).ready(function () {
-    // initialize our forms
-    $("select").formSelect();
-    // $("#crawlLength").formSelect();
+  // initialize our forms
+  $("select").formSelect();
+  // $("#crawlLength").formSelect();
 
-    $("#generateBtn").on("click", function (event) {
-      event.preventDefault();
-      console.log("hey yaaaaaaaaaaaa");
-      var instance = M.FormSelect.getInstance($("#alcoholType"));
-      var alcSelect = instance.getSelectedValues();
-      console.log(alcSelect);
-      // var instance2 = M.FormSelect.getInstance($("#crawlLength"));
-      // var lengthSelect = instance2.getSelectedValues();
+  $("#generateBtn").on("click", function (event) {
+    event.preventDefault();
+    console.log("hey yaaaaaaaaaaaa");
+    var instance = M.FormSelect.getInstance($("#alcoholType"));
+    var alcSelect = instance.getSelectedValues();
+    console.log(alcSelect);
+    // var instance2 = M.FormSelect.getInstance($("#crawlLength"));
+    // var lengthSelect = instance2.getSelectedValues();
 
-      console.log($("#crawlLength").val());
-    });
-
-    console.log(location.href + " askldmfklahsdf");
-    // var stringURL = (location.href).toString
-    // $(".sidenav").sidenav();
-    if (location.href.includes("/home.html")) {
-      console.log("OMMMMGGGGGGGGGGGGGGGGG");
-      // var cityGrab = document.getElementById("currentCity");
-      // cityGrab.textContent = `Your Current City Is: ${city}`;
-      var ourCity = $("#textarea2").val();
-      // execute call on the home page
-      console.log(ourCity);
-      getCityId(ourCity);
-    } else {
-      return;
-    }
+    console.log($("#crawlLength").val());
   });
+
+  console.log(location.href + " askldmfklahsdf");
+  // var stringURL = (location.href).toString
+  // $(".sidenav").sidenav();
+  if (location.href.includes("/home.html")) {
+    console.log("OMMMMGGGGGGGGGGGGGGGGG");
+    // var cityGrab = document.getElementById("currentCity");
+    // cityGrab.textContent = `Your Current City Is: ${city}`;
+    var ourCity = $("#textarea2").val();
+    // execute call on the home page
+    console.log(ourCity);
+    getCityId(ourCity);
+  } else {
+    return;
+  }
 });
 // nav bar drop downs end
 
