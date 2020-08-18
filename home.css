@@ -53,10 +53,22 @@ ul {
 
 }
 
-#imgDiv {
+/* #imgDiv {
   padding: 120px 120px 120px 120px 120px;
 
+} */
+
+#imgDiv {
+  width: 300px;
+  height: 300px;
+
 }
+
+.sidenav {
+  background-color: #546E7A !important;
+
+}
+
 
 /* Page End */
 
@@ -84,20 +96,25 @@ textarea:focus,
 input:focus {
   font-family: "Pacifico", cursive;
   color: white;
+  font-size: 25px !important;
 }
 
 input,
 select,
 textarea {
   font-family: "Pacifico", cursive;
-  color: white;
+  color: orange;
+  text-align: center;
+  font-size: 20px !important;
 }
 
 h3 {
   font-family: 'Pacifico', cursive;
   text-align: left;
   font-size: 15px;
-  color: gray;
+  color: orange;
+  text-align: center;
+  font-size: 20px !important;
 }
 
 /* Text Bar End */
