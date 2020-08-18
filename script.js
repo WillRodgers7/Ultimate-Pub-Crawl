@@ -20,6 +20,7 @@ var mode = "walk";
 var routingURL; // global var holding the dynamic ROUTING API CALL
 
 var instanceSelect;
+var alcSelect; // array of choices from filter button
 
 //  https://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
 // calculates distance from two points
@@ -101,7 +102,9 @@ function howManyBars(randomizedArray) {
 
     // midpoint will be an array; [lat, long]
     midpoint = midpointCalculator(long1, lat1, long2, lat2);
-    console.log("outside of the midpoint call function ===== " + midpoint);
+    console.log(
+      "outside of the midpoint call function with 3 bars ===== " + midpoint
+    );
     // calculate distance from the endpoints
     totalDistanceInKm = getDistanceFromLatLonInKm(
       lat1,
@@ -174,7 +177,7 @@ function howManyBars(randomizedArray) {
 
     midpoint = midpointCalculator(long1, lat1, long2, lat2);
     console.log(
-      "outside of the midpoint call function with 4 bars ===== " + midpoint
+      "outside of the midpoint call function with 5 bars ===== " + midpoint
     );
     totalDistanceInKm = getDistanceFromLatLonInKm(
       lat1,
@@ -226,6 +229,9 @@ function getCityId(cityName) {
     url: queryU,
     success: function (response) {
       console.log(response);
+      console.log("right before search API call...");
+      console.log("updated searchQ: " + searchQ);
+      console.log("updated search radius: " + searchRadius);
       mainCityLat = response.location_suggestions[0].latitude;
       mainCityLong = response.location_suggestions[0].longitude;
       // -----------------------------------------------------------------------
@@ -421,6 +427,15 @@ $("#userForm").on("submit", function (event) {
     if (location.href.includes("/index.html")) {
       window.location.href = "./home.html";
     } else {
+      // update number of bars
+      barHopNumber = $("#crawlLength").val();
+      if (barHopNumber == 3) {
+        offsetNumBars = 0;
+      } else if (barHopNumber == 4) {
+        offsetNumBars = 1;
+      } else {
+        offsetNumBars = 2;
+      }
       getCityId(city);
     }
   }
@@ -459,12 +474,39 @@ $(document).ready(function () {
     event.preventDefault();
     console.log("hey yaaaaaaaaaaaa");
     var instance = M.FormSelect.getInstance($("#alcoholType"));
-    var alcSelect = instance.getSelectedValues();
+    // changed into a global
+    alcSelect = instance.getSelectedValues();
     console.log(alcSelect);
     // var instance2 = M.FormSelect.getInstance($("#crawlLength"));
     // var lengthSelect = instance2.getSelectedValues();
 
     console.log($("#crawlLength").val());
+
+    searchQ = "";
+    for (var i = 0; i < alcSelect.length; i++) {
+      searchQ = searchQ + alcSelect[i] + " ";
+    }
+    console.log("searchQ = " + searchQ);
+    barHopNumber = $("#crawlLength").val();
+    if (barHopNumber == 3) {
+      offsetNumBars = 0;
+    } else if (barHopNumber == 4) {
+      offsetNumBars = 1;
+    } else {
+      offsetNumBars = 2;
+    }
+
+    console.log(
+      "barHopNumber = " + barHopNumber + " and offset = " + offsetNumBars
+    );
+
+    searchRadius = $("#search-radius").val();
+
+    // convert to meters
+    searchRadius = searchRadius * 1.609 * 1000;
+    console.log("search radius from slider = " + searchRadius);
+    console.log($("#textarea2").val());
+    getCityId($("#textarea2").val());
   });
 
   console.log(location.href + " askldmfklahsdf");
