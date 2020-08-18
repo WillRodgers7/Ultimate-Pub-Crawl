@@ -2,36 +2,28 @@
 body {
   background: url("./bottles.jpg") no-repeat center center fixed;
   background-size: cover;
-
 }
 
 /* Add some content on the video/page */
 .content {
-
   bottom: 0;
   background: rgba(0, 0, 0, 0.2);
   color: #f1f1f1;
   width: 100%;
   height: 100%;
   padding: 20px;
-
-
 }
-
 
 h1 {
-  font-family: 'Pacifico', cursive;
+  font-family: "Pacifico", cursive;
   font-size: 95px;
   text-align: center;
-
 }
 
-
 p {
-  font-family: 'Francois One', sans-serif;
+  font-family: "Francois One", sans-serif;
   font-size: 25px;
   text-align: center;
-
 }
 
 .card-title {
@@ -39,25 +31,25 @@ p {
   font-size: 40px;
   text-align: center;
   color: orange !important
-
 }
 
 ul {
-  font-family: 'Francois One', sans-serif;
+  font-family: "Francois One", sans-serif;
   font-size: 20px;
   text-align: center;
-
 }
 
 .card-action {
-  font-family: 'Francois One', sans-serif;
+  font-family: "Francois One", sans-serif;
   font-size: 20px;
   text-align: center;
 }
 
 #whiskeyImg {
-  max-width: 100%;
+  /* max-width: 100%; */
   height: auto;
+  /* height: 100%; */
+  width: 100%;
 
 }
 
@@ -65,12 +57,9 @@ ul {
 
 /* Filter button start */
 a#filter.btn-floating {
-
   right: 225px;
   position: relative;
   top: 45px;
-
-
 }
 
 /* Filter Button end */
@@ -88,27 +77,34 @@ input:focus {
 
 textarea:focus,
 input:focus {
-  font-family: 'Pacifico', cursive;
+  font-family: "Pacifico", cursive;
   color: white;
 }
 
 input,
 select,
 textarea {
-  font-family: 'Pacifico', cursive;
+  font-family: "Pacifico", cursive;
   color: white;
+}
+
+h3 {
+  font-family: 'Pacifico', cursive;
+  text-align: left;
+  font-size: 15px;
+  color: gray;
 }
 
 /* Text Bar End */
 
 /* Map Start */
 
-.container {
+#mapContainer {
   position: relative;
   top: 5%;
   left: 0%;
-  width: 75%;
-  height: 75%;
+  width: 500px;
+  height: 500px;
   background-color: aqua;
   margin-bottom: 2rem;
 }
@@ -123,9 +119,6 @@ textarea {
 
 /* Map End */
 
-
-
-
 /* Text Bar Color Shenanigans */
 /* Text Bar End input:-webkit-autofill,
 input:-webkit-autofill:hover,
@@ -134,4 +127,3 @@ input:-webkit-autofill:active {
     transition: background-color 5000s ease-in-out 0s;
     -webkit-text-fill-color: white !important;
 } */
-
