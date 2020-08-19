@@ -10,7 +10,7 @@ var offsetNumBars = 0; // it'll be reassigned once you update filter parameters
 var city;
 // lets do a search query instead with the keywords, bar, brewery, winery, pub..
 var searchQ = "bar"; // initialize to bar
-var searchRadius = 1500; // initialize call to 5000m or 5 km
+var searchRadius = 3218; // initialize call to 2 miles; 3218 meters
 var mainCityLat; // grabbed lat and long from first api call
 var mainCityLong;
 var midpoint; // holds calculated midpoint
@@ -129,8 +129,8 @@ function howManyBars(randomizedArray) {
     var middleLat2 = randomizedArray[2].restaurant.location.latitude;
 
     // last bar
-    var long2 = randomizedArray[2].restaurant.location.longitude;
-    var lat2 = randomizedArray[2].restaurant.location.latitude;
+    var long2 = randomizedArray[3].restaurant.location.longitude;
+    var lat2 = randomizedArray[3].restaurant.location.latitude;
 
     midpoint = midpointCalculator(long1, lat1, long2, lat2);
     console.log(
@@ -332,7 +332,7 @@ function getCityId(cityName) {
             style: `https://maps.geoapify.com/v1/styles/osm-bright/style.json?apiKey=${mapAPIKey}`,
           });
           map.addControl(new mapboxgl.NavigationControl());
-
+          console.log(routingURL);
           map.on("load", function () {
             console.log("this is right before nested MAPS api call.....");
             $.ajax({
