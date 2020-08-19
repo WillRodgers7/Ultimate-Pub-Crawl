@@ -16,6 +16,7 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 
 	 <!-- Compiled and minified CSS -- Materialize -->
+	 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <!-- Compiled and minified JavaScript -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
@@ -42,9 +43,9 @@
 			<h1>Ultimate Pub Crawl</h1>
 			<br />
 			<!-- Text Area Begin -->
-			<div id="yourCity">
+			<div class="container" id="yourCity">
 				<div class="row">
-				  <form id="userForm" class="col s3 offset-s0">
+				  <form id="userForm" class="col s6 ">
 					<div class="input-field col s12">
 						<!-- Current input turn auto complete off -->
 					  <input id="textarea2" type="text" class="materialize-textarea" autocomplete="off"></input>
@@ -53,12 +54,12 @@
 				  </form>
 			<!--Text Area End  -->
 				  <!-- Filter Button Start -->
-				  <div id="filterBox">
+				  <div class="col s6" id="filterBox">
 						<a
-							class="btn-floating right btn-large waves-effect orange sidenav-trigger"  
+							class="btn-large btn-floating right waves-effect orange sidenav-trigger"  
 							id="filter"
 							data-target="slide-out"
-							><i class="material-icons">+</i>
+							><i class="material-icons">build</i>
 						</a>
 					<!-- Filter Button End -->
 				</div>
@@ -121,7 +122,7 @@
 				</form>
 				<!-- slider end -->
 				<!-- save start -->
-				<a href="#" class="waves-effect btn-large" id="generateBtn">Generate</a>
+				<a href="#" class="waves-effect btn-large" id="generateBtn">Generate<i class="material-icons">bubble_chart</i></a>
 				<!-- save end -->
 			</ul>
 			<!-- begin display of cards -->
