@@ -20,4 +20,4 @@ Example 3: Change your parameters
 
 
 Example 4: How it all works
-https://youtu.be/XWzIinwJP4Y
+<iframe width="560" height="315" src="https://www.youtube.com/embed/XWzIinwJP4Y" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
