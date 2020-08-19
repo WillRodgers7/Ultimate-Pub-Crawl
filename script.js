@@ -1,17 +1,12 @@
 // displays info received from Zomato API
 var displayResults = $(".results");
-// global vars
 var barHopNumber = 3; //start with 3 bars minimum
-// will need an offset number for number of bars wanted after filter/updated user parameters
 // 0 for 3 spots, 1 for 4 spots, 2 for 5 spots
-var offsetNumBars = 0; // it'll be reassigned once you update filter parameters
-
-// will variable to hold city from index to pass into home.html
-var city;
-// lets do a search query instead with the keywords, bar, brewery, winery, pub..
-var searchQ = "bar"; // initialize to bar
+var offsetNumBars = 0; // reassigned once you update filter parameters
+var city; // will variable to hold city from index to pass into home.html
+var searchQ = "bar"; // search query initialize to bar
 var searchRadius = 3218; // initialize call to 2 miles; 3218 meters
-var mainCityLat; // grabbed lat and long from first api call
+var mainCityLat; // lat and long of queried city
 var mainCityLong;
 var midpoint; // holds calculated midpoint
 var totalDistanceInKm; // holds total distance of generated route; used for custom zoom.
@@ -19,7 +14,7 @@ var mapAPIKey = "85e9d3f13d3845e0a0ca48b327bba8c4";
 var mode = "walk";
 var routingURL; // global var holding the dynamic ROUTING API CALL
 
-var instanceSelect;
+var instanceSelect; //
 var alcSelect; // array of choices from filter button
 
 //  https://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
@@ -435,10 +430,10 @@ function getCityId(cityName) {
 // prelim submit function
 $("#userForm").on("submit", function (event) {
   event.preventDefault();
-  if (location.href.includes("/index.html")) {
-    city = $("#textarea1").val().trim();
-  } else if (location.href.includes("/home.html")) {
+  if (location.href.includes("/home.html")) {
     city = $("#textarea2").val().trim();
+  } else {
+    city = $("#textarea1").val().trim();
   }
   localStorage.setItem("currentCity", city);
   console.log("Submitted city: " + city);
@@ -448,10 +443,8 @@ $("#userForm").on("submit", function (event) {
     // Connecting Index and Home Page (Begining)
     // when we submit, if we are in index...then go to home page.
     // but if we are in home.html (else), then run the getcityID script! prevents page from reloading completely
-    if (location.href.includes("/index.html")) {
-      window.location.href = "./home.html";
-    } else {
-      // update number of bars
+    if (location.href.includes("/home.html")) {
+      // window.location.href = "./home.html";
       barHopNumber = $("#crawlLength").val();
       if (barHopNumber == 3) {
         offsetNumBars = 0;
@@ -461,6 +454,19 @@ $("#userForm").on("submit", function (event) {
         offsetNumBars = 2;
       }
       getCityId(city);
+    } else {
+      window.location.href = "./home.html";
+
+      // update number of bars
+      // barHopNumber = $("#crawlLength").val();
+      // if (barHopNumber == 3) {
+      //   offsetNumBars = 0;
+      // } else if (barHopNumber == 4) {
+      //   offsetNumBars = 1;
+      // } else {
+      //   offsetNumBars = 2;
+      // }
+      // getCityId(city);
     }
   }
 });
