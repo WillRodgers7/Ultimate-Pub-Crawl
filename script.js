@@ -1,7 +1,7 @@
 // displays info received from Zomato API
 var displayResults = $(".results");
 var barHopNumber = 3; //start with 3 bars minimum
-// 0 for 3 spots, 1 for 4 spots, 2 for 5 spots
+// 0 for 3 bars, 1 for 4 bars, 2 for 5 bars
 var offsetNumBars = 0; // reassigned once you update filter parameters
 var city; // will variable to hold city from index to pass into home.html
 var searchQ = "bar"; // search query initialize to bar
@@ -13,8 +13,6 @@ var totalDistanceInKm; // holds total distance of generated route; used for cust
 var mapAPIKey = "85e9d3f13d3845e0a0ca48b327bba8c4";
 var mode = "walk";
 var routingURL; // global var holding the dynamic ROUTING API CALL
-
-var instanceSelect; //
 var alcSelect; // array of choices from filter button
 
 //  https://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
@@ -58,8 +56,6 @@ function midpointCalculator(long1, lat1, long2, lat2) {
   // now convert back to degrees
   lat3 = lat3 * (180 / Math.PI);
   long3 = long3 * (180 / Math.PI);
-
-  console.log("new longitude: " + long3 + ", new latitude: " + lat3);
   return [long3, lat3];
 }
 
@@ -81,25 +77,23 @@ function getRandomRestaurants(resArray) {
   return randomizedArray;
 }
 
+// receives the randomized array of bars/restaurants
+// and calculates distance/midpoints/routingURL depending on how many bars user wants
 function howManyBars(randomizedArray) {
   if (barHopNumber == 3) {
+    // 3 bars case
+    // first bar
     var long1 = randomizedArray[0].restaurant.location.longitude;
     var lat1 = randomizedArray[0].restaurant.location.latitude;
-
-    // middle bars
+    // middle bar
     var middleLong1 = randomizedArray[1].restaurant.location.longitude;
     var middleLat1 = randomizedArray[1].restaurant.location.latitude;
-
+    // last bar
     var long2 = randomizedArray[2].restaurant.location.longitude;
     var lat2 = randomizedArray[2].restaurant.location.latitude;
-    // adding another point; 3 points minimum
-
     // midpoint will be an array; [lat, long]
     midpoint = midpointCalculator(long1, lat1, long2, lat2);
-    console.log(
-      "outside of the midpoint call function with 3 bars ===== " + midpoint
-    );
-    // calculate distance from the endpoints
+    // add distance from point to point
     totalDistanceInKm = getDistanceFromLatLonInKm(
       lat1,
       long1,
@@ -109,28 +103,22 @@ function howManyBars(randomizedArray) {
     totalDistanceInKm =
       totalDistanceInKm +
       getDistanceFromLatLonInKm(middleLat1, middleLong1, lat2, long2);
-    console.log("distance in km: " + totalDistanceInKm);
     routingURL = `https://api.geoapify.com/v1/routing?waypoints=${lat1},${long1}|${middleLat1},${middleLong1}|${lat2},${long2}&mode=${mode}&apiKey=${mapAPIKey}`;
   } else if (barHopNumber == 4) {
-    // 4 bars _____________________________________________________
+    // 4 bars case
     // first bar
     var long1 = randomizedArray[0].restaurant.location.longitude;
     var lat1 = randomizedArray[0].restaurant.location.latitude;
-
     // middle bars
     var middleLong1 = randomizedArray[1].restaurant.location.longitude;
     var middleLat1 = randomizedArray[1].restaurant.location.latitude;
     var middleLong2 = randomizedArray[2].restaurant.location.longitude;
     var middleLat2 = randomizedArray[2].restaurant.location.latitude;
-
     // last bar
     var long2 = randomizedArray[3].restaurant.location.longitude;
     var lat2 = randomizedArray[3].restaurant.location.latitude;
-
     midpoint = midpointCalculator(long1, lat1, long2, lat2);
-    console.log(
-      "outside of the midpoint call function with 4 bars ===== " + midpoint
-    );
+    // add distance from point to point
     totalDistanceInKm = getDistanceFromLatLonInKm(
       lat1,
       long1,
@@ -148,15 +136,12 @@ function howManyBars(randomizedArray) {
     totalDistanceInKm =
       totalDistanceInKm +
       getDistanceFromLatLonInKm(middleLat2, middleLong2, lat2, long2);
-
     routingURL = `https://api.geoapify.com/v1/routing?waypoints=${lat1},${long1}|${middleLat1},${middleLong1}|${middleLat2},${middleLong2}|${lat2},${long2}&mode=${mode}&apiKey=${mapAPIKey}`;
   } else {
-    // _____________________________________________________
-    // barhopNumber == 5
+    //  5 bars case
     // first bar
     var long1 = randomizedArray[0].restaurant.location.longitude;
     var lat1 = randomizedArray[0].restaurant.location.latitude;
-
     // middle bars
     var middleLong1 = randomizedArray[1].restaurant.location.longitude;
     var middleLat1 = randomizedArray[1].restaurant.location.latitude;
@@ -164,15 +149,10 @@ function howManyBars(randomizedArray) {
     var middleLat2 = randomizedArray[2].restaurant.location.latitude;
     var middleLong3 = randomizedArray[3].restaurant.location.longitude;
     var middleLat3 = randomizedArray[3].restaurant.location.latitude;
-
     // last bar
     var long2 = randomizedArray[4].restaurant.location.longitude;
     var lat2 = randomizedArray[4].restaurant.location.latitude;
-
     midpoint = midpointCalculator(long1, lat1, long2, lat2);
-    console.log(
-      "outside of the midpoint call function with 5 bars ===== " + midpoint
-    );
     totalDistanceInKm = getDistanceFromLatLonInKm(
       lat1,
       long1,
@@ -198,21 +178,20 @@ function howManyBars(randomizedArray) {
     totalDistanceInKm =
       totalDistanceInKm +
       getDistanceFromLatLonInKm(middleLat3, middleLong3, lat2, long2);
-
     routingURL = `https://api.geoapify.com/v1/routing?waypoints=${lat1},${long1}|${middleLat1},${middleLong1}|${middleLat2},${middleLong2}|${middleLat3},${middleLong3}|${lat2},${long2}&mode=${mode}&apiKey=${mapAPIKey}`;
   }
 }
 
-// begin recursive ajax calls. Get lat and long of user input city ---> Search query using the searchQ/lat/long/searchRadius/ ---> call Maps API
+// takes in name of user input city
+// begin nested ajax calls. Get lat and long of user input city ---> Search query using the searchQ/lat/long/searchRadius/ ---> call Maps API
 function getCityId(cityName) {
-  console.log(cityName);
   var apiKey = "2f0db10ea057aa7670716496e756f590";
   // limits to one possible result, the main city
   var queryU =
     "https://developers.zomato.com/api/v2.1/locations?query=" +
     cityName +
     "&count=1";
-
+  // begin first ajax call
   $.ajax({
     headers: {
       Accept: "text/plain; charset=utf-8",
@@ -222,14 +201,10 @@ function getCityId(cityName) {
     method: "GET",
     url: queryU,
     success: function (response) {
-      console.log(response);
-      console.log("right before search API call...");
-      console.log("updated searchQ: " + searchQ);
-      console.log("updated search radius: " + searchRadius);
       mainCityLat = response.location_suggestions[0].latitude;
       mainCityLong = response.location_suggestions[0].longitude;
-      // -----------------------------------------------------------------------
-      // search Q  is dynamic depending on filter settings
+      // search Q  is dynamic depending on customized settings
+      // update queryU for our next Zomato API "search" call
       queryU =
         "https://developers.zomato.com/api/v2.1/search?q=" +
         searchQ +
@@ -239,8 +214,6 @@ function getCityId(cityName) {
         mainCityLong +
         "&radius=" +
         searchRadius;
-      console.log("search radius is ======= " + searchRadius);
-
       $.ajax({
         headers: {
           Accept: "text/plain; charset=utf-8",
@@ -252,7 +225,9 @@ function getCityId(cityName) {
         success: function (response) {
           // randomize the 20 results, and spit out an array carrying the desired amount of bars
           var randomResArray = getRandomRestaurants(response.restaurants);
+          // iPlus represents id to match in home.html
           var iPlus;
+          // show cards depending on how many bars selected
           if (barHopNumber == 3) {
             $("#row4").hide();
             $("#row5").hide();
@@ -263,20 +238,16 @@ function getCityId(cityName) {
             $("#row4").show();
             $("#row5").show();
           }
+          // dynamically write onto the cards the restaurant info
           for (var i = 0; i < randomResArray.length; i++) {
-            // changed from const to var; renames to thisRestaurant
+            // hold this particular restaurant info in this iteration
             var thisRestaurant = randomResArray[i].restaurant;
-            // var establishment = thisRestaurant.establishment[0];
             var name = thisRestaurant.name;
-            // var reviews = thisRestaurant.user_rating.aggregate_rating;
             var cost = thisRestaurant.average_cost_for_two;
             var description = thisRestaurant.highlights;
             var address = thisRestaurant.location.address;
             var phone = thisRestaurant.phone_numbers;
-
-            console.log("name of this restaurant in for loop: " + name);
             iPlus = i + 1;
-            console.log("in the for loop: " + iPlus);
             // Populates cards with restaurant information
             $("#title" + iPlus).text(name);
             $("#address" + iPlus).text("Address: " + address);
@@ -290,17 +261,9 @@ function getCityId(cityName) {
                 ", " +
                 description[2]
             );
-
-            // var addLi = $("<li>").text("Address: " + address);
-            // $(".list").append(addLi);
           }
-
-          // count how many bars there are and run distance/midpoint calculations based on that
-          // this function could also build the MAP query string
+          // count how many bars there are and run distance/midpoint/routingURL calculations based on that
           howManyBars(randomResArray);
-          console.log("this is after the howManyBars() call");
-          console.log(randomResArray);
-
           var customZoom;
           // change zoom according to how far away the endpoints are from each other
           if (totalDistanceInKm < 1.5) {
@@ -316,29 +279,27 @@ function getCityId(cityName) {
           } else {
             customZoom = 10;
           }
-          console.log("conditional zoom: " + customZoom);
-
-          // MAP API STUFF GOES HERE, another AJAX call
-          // change the center to be one of the locations
+          // creating map tile
           var map = new mapboxgl.Map({
             container: "my-map",
             center: midpoint,
             zoom: customZoom,
             style: `https://maps.geoapify.com/v1/styles/osm-bright/style.json?apiKey=${mapAPIKey}`,
           });
+          // adding zoom buttons
           map.addControl(new mapboxgl.NavigationControl());
-          console.log(routingURL);
+          // when the map loads, execute...
           map.on("load", function () {
-            console.log("this is right before nested MAPS api call.....");
             $.ajax({
               method: "GET",
               url: routingURL,
-
               success: function (result) {
+                // begin route drawing
                 map.addSource("route", {
                   type: "geojson",
                   data: result,
                 });
+                // add the drawing
                 map.addLayer({
                   id: "route",
                   type: "line",
@@ -352,7 +313,7 @@ function getCityId(cityName) {
                     "line-width": 7,
                   },
                 });
-                // Script for loading geojson bar points!!!
+                // Script for loading geojson bar markers
                 var pointgeojson = { type: "FeatureCollection", features: [] };
                 for (var i = 0; i < randomResArray.length; i++) {
                   addPoint = {
@@ -371,20 +332,7 @@ function getCityId(cityName) {
                   };
                   pointgeojson.features.push(addPoint);
                 }
-
-                // {
-                //   type: 'Feature',
-                //   geometry: {
-                //     type: 'Point',
-                //     coordinates: [randomResArray[1].restaurant.location.longitude, randomResArray[1].restaurant.location.latitude]
-                //   },
-                //   properties: {
-                //     title: randomResArray[1].restaurant.name,
-                //     description: randomResArray[1].restaurant.timings
-                //   }
-                // }]
-                // };
-
+                // load the markers
                 map.loadImage(
                   "https://api.geoapify.com/v1/icon/?type=awesome&color=%23467cda&icon=glass-martini&apiKey=85e9d3f13d3845e0a0ca48b327bba8c4",
                   function (error, image) {
@@ -412,12 +360,6 @@ function getCityId(cityName) {
                     });
                   }
                 );
-                console.log("Map Object:");
-                console.log(result); // Full Object; map
-                console.log("Restaurants displayed");
-                console.log(randomResArray);
-                console.log("Restaurants Object: ");
-                console.log(response); //Full Object; should be restaurants
               },
             });
           });
@@ -427,24 +369,22 @@ function getCityId(cityName) {
   });
 }
 
-// prelim submit function
+// executes when the user submits on any text area
 $("#userForm").on("submit", function (event) {
   event.preventDefault();
+  // grab the appropriate text value depending on which page you're on
   if (location.href.includes("/home.html")) {
     city = $("#textarea2").val().trim();
   } else {
     city = $("#textarea1").val().trim();
   }
   localStorage.setItem("currentCity", city);
-  console.log("Submitted city: " + city);
+  // if no user input city, do nothing and return
   if (city == "") {
     return;
   } else {
-    // Connecting Index and Home Page (Begining)
-    // when we submit, if we are in index...then go to home page.
-    // but if we are in home.html (else), then run the getcityID script! prevents page from reloading completely
+    // regenerate bar crawl with updated parameters
     if (location.href.includes("/home.html")) {
-      // window.location.href = "./home.html";
       barHopNumber = $("#crawlLength").val();
       if (barHopNumber == 3) {
         offsetNumBars = 0;
@@ -453,70 +393,42 @@ $("#userForm").on("submit", function (event) {
       } else {
         offsetNumBars = 2;
       }
+      // run the API calls with updated info
       getCityId(city);
     } else {
       window.location.href = "./home.html";
-
-      // update number of bars
-      // barHopNumber = $("#crawlLength").val();
-      // if (barHopNumber == 3) {
-      //   offsetNumBars = 0;
-      // } else if (barHopNumber == 4) {
-      //   offsetNumBars = 1;
-      // } else {
-      //   offsetNumBars = 2;
-      // }
-      // getCityId(city);
+      // if we submit from index.html, then go to next page
     }
   }
 });
-// Connecting Index and Home Page (End)
 
 // Side bar nav start
 document.addEventListener("DOMContentLoaded", function () {
   var elems = document.querySelectorAll(".sidenav");
   var instances = M.Sidenav.init(elems, {});
 });
-
-// Initialize collapsible (uncomment the lines below if you use the dropdown variation)
+// Initialize collapsible
 var collapsibleElem = document.querySelector(".collapsible");
 var collapsibleInstance = M.Collapsible.init(collapsibleElem, {});
 
-// initialize form select
-// document.addEventListener("DOMContentLoaded", function () {
-//   var elems = document.querySelectorAll("select");
-//   instanceSelect = M.FormSelect.init(elems, options);
-// });
-
-// get locally stored city every time we load page
+// get locally stored city every time we load page on home.html
 $("#textarea2").val(localStorage.getItem("currentCity"));
-// getCityId($("#textarea2").val());
-
-//Side bar nav end
-// nav bar drop downs start
 
 $(document).ready(function () {
-  // initialize our forms
-  $("select").formSelect();
-  // $("#crawlLength").formSelect();
-
+  // executes when you click the generate button
   $("#generateBtn").on("click", function (event) {
     event.preventDefault();
-    console.log("hey yaaaaaaaaaaaa");
+    // initialize form select of establishment types
     var instance = M.FormSelect.getInstance($("#alcoholType"));
-    // changed into a global
+    // holds an array of the selected options
     alcSelect = instance.getSelectedValues();
-    console.log(alcSelect);
-    // var instance2 = M.FormSelect.getInstance($("#crawlLength"));
-    // var lengthSelect = instance2.getSelectedValues();
-
-    console.log($("#crawlLength").val());
-
+    // reset the search query string
+    // and build a new one depending on what user selected
     searchQ = "";
     for (var i = 0; i < alcSelect.length; i++) {
       searchQ = searchQ + alcSelect[i] + " ";
     }
-    console.log("searchQ = " + searchQ);
+    // update parameters
     barHopNumber = $("#crawlLength").val();
     if (barHopNumber == 3) {
       offsetNumBars = 0;
@@ -525,65 +437,20 @@ $(document).ready(function () {
     } else {
       offsetNumBars = 2;
     }
-
-    console.log(
-      "barHopNumber = " + barHopNumber + " and offset = " + offsetNumBars
-    );
-
     searchRadius = $("#search-radius").val();
-
     // convert to meters
     searchRadius = searchRadius * 1.609 * 1000;
-    console.log("search radius from slider = " + searchRadius);
-    console.log($("#textarea2").val());
+    // re-generate bars from the city thats written in the text area
     getCityId($("#textarea2").val());
   });
-
-  console.log(location.href + " askldmfklahsdf");
-  // var stringURL = (location.href).toString
-  // $(".sidenav").sidenav();
   if (location.href.includes("/home.html")) {
-    console.log("OMMMMGGGGGGGGGGGGGGGGG");
-    // var cityGrab = document.getElementById("currentCity");
-    // cityGrab.textContent = `Your Current City Is: ${city}`;
+    // initialize the form select only on home.html
+    $("select").formSelect();
     var ourCity = $("#textarea2").val();
-    // execute call on the home page
-    console.log(ourCity);
+    // execute call on the home page, on reload
     getCityId(ourCity);
   } else {
+    // else means we are in index.html
     return;
   }
 });
-// nav bar drop downs end
-
-// nav bar slider start
-
-var slider = document.getElementById("test-slider");
-noUiSlider.create(slider, {
-  start: [20, 80],
-  connect: true,
-  step: 1,
-  orientation: "horizontal", // 'horizontal' or 'vertical'
-  range: {
-    min: 0,
-    max: 100,
-  },
-  //  format: wNumb({
-  //    decimals: 0
-  //  })
-});
-
-// nav bar slider end
-
-// generate button
-// $("#generateBtn").on("click", function (event) {
-//   event.stopPropagation();
-//   console.log("hey yaaaaaaaaaaaa");
-//   event.preventDefault();
-//   console.log("hey yaaaaaaaaaaaa");
-
-//   // var alcSelect = instanceSelect.get
-//   var instance = M.FormSelect.getInstance($("select"));
-//   var alcSelect = instance.getSelectedValues();
-//   console.log("this is the alc selections: " + alcSelect);
-// });
