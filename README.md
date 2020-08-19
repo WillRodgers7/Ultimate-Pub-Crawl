@@ -21,4 +21,5 @@ Example 3: Change your parameters
 
 Example 4: How it all works
 
-![ezgif com-video-to-gif](https://user-images.githubusercontent.com/66852098/90590554-ba49d900-e195-11ea-83b8-fbf03e28527f.gif)
+![ezgif com-video-to-gif](https://user-images.githubusercontent.com/66852098/90590870-799e8f80-e196-11ea-971d-d013bb906b92.gif)
+
