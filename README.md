@@ -17,3 +17,8 @@ Example 2: Generate your crawl auto matically
 Example 3: Change your parameters
 
 <img width="1440" alt="Screen Shot 2020-08-18 at 7 57 02 PM" src="https://user-images.githubusercontent.com/66852098/90587173-92567780-e18d-11ea-987f-ff846baf3b69.png">
+
+
+Example 4: How it all works
+
+<iframe src="https://drive.google.com/file/d/1YD9ggkYf257YOcV1qmgt9PRxs3roVkoh/preview" width="640" height="480"></iframe>
